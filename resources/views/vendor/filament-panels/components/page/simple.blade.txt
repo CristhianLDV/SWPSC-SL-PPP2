@@ -1,0 +1,25 @@
+@props([
+    'heading' => null,
+    'subheading' => null,
+])
+
+<div class="min-h-screen flex items-center justify-center bg-white">
+    <div {{ $attributes->class(['fi-simple-page w-full max-w-md bg-white shadow-md rounded-lg p-8']) }}>
+        
+        {{-- Logo + Texto institucional --}}
+        <div class="flex flex-col items-center justify-center mb-6">
+            <img src="{{ asset('logo.png') }}" class="mx-auto mb-3" style="max-width: 100px;" />
+            <h1 class="text-lg font-bold text-gray-800">I.E. San Lorenzo Cruceta</h1>
+            <p class="text-sm text-gray-600">Laboratorio de TIC</p>
+        </div>
+
+        {{-- Formulario --}}
+        <section class="grid gap-y-4">
+            {{ $slot }}
+        </section>
+
+        @if (! $this instanceof \Filament\Tables\Contracts\HasTable)
+            <x-filament-actions::modals />
+        @endif
+    </div>
+</div>

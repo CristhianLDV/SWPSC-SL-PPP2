@@ -1,0 +1,37 @@
+version: "3.3"
+services:
+  marmotteio:
+    ports:
+      - 8000:8000
+    container_name: marmotteio
+    environment:
+      - APP_NAME=Marmotte.io
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://0.0.0.0:8000
+      - ASSET_URL=http://0.0.0.0:8000
+      - APP_KEY=base64:RVvW9+2jO9MpuTDyxmIO45Z9t7BY0VWxgDImBNmhFwA
+      - DB_CONNECTION=mysql
+      - DB_HOST=marmotteiodb
+      - DB_PORT=3306
+      - DB_DATABASE=marmotteio
+      - DB_USERNAME=marmotteio
+      - DB_PASSWORD=marmotteio
+    volumes:
+      - marmotteio:/app
+    image: marmotteio/marmotteio:latest
+  marmotteiodb:
+    image: mariadb:latest
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - marmotteiodb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=marmotteio
+      - MYSQL_PASSWORD=marmotteio
+      - MYSQL_DATABASE=marmotteio
+      - MYSQL_USER=marmotteio
+volumes:
+  marmotteio: {}
+  marmotteiodb: {}
+networks: {}

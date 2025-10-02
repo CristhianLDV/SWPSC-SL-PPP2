@@ -1,0 +1,69 @@
+/* === Base imports === */
+@import '/vendor/filament/filament/resources/css/theme.css';
+@config 'tailwind.config.js';
+
+/* ======================================
+   🔧 VARIABLES GLOBALES
+   ====================================== */
+:root {
+    --sidebar-width: 17rem !important;
+}
+
+/* ======================================
+   🎨 OVERRIDES DE COMPONENTES GENERALES
+   ====================================== */
+
+/* Botón de selección de tenant */
+.fi-tenant-menu-trigger {
+    background-color: #fffffff5;
+}
+
+/* Gráficas (ApexCharts) */
+.filament-apex-charts-chart-object {
+    min-height: 200px !important;
+}
+
+/* Secciones (ej. en formularios largos) */
+.fi-section {
+    max-height: 248px !important;
+}
+
+/* Tabs: que ocupen todo el ancho */
+.fi-tabs {
+    width: 100%;
+}
+
+/* Eliminar ring doble en focus */
+.focus\:ring-2:focus {
+    --tw-ring-shadow: unset !important;
+}
+
+/* Texto rojo personalizado */
+.text-red .text-3xl {
+    color: rgb(208, 47, 47) !important;
+}
+
+/* ======================================
+   🔑 LOGIN PAGE OVERRIDES
+   ====================================== */
+
+/* === Personalización de Login Filament === */
+
+/* Forzar fondo blanco en todo el login */
+body.fi-body {
+    background-color: #ffffff !important;
+}
+
+/* Quitar márgenes verticales del contenedor principal */
+body.fi-body .fi-simple-main {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Centrar el login en pantalla */
+body.fi-body .fi-simple-main-ctn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh !important; /* siempre pantalla completa */
+}
