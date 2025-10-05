@@ -6,6 +6,7 @@ use App\Filament\Resources\HardwareStatusResource\Pages;
 use App\Filament\Resources\Shared\CreatedAtUpdatedAtComponent;
 use App\Filament\Resources\Shared\ImagesAndNoteComponent;
 use App\Models\HardwareStatus;
+use Filament\Notifications\Notification;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -21,6 +22,10 @@ class HardwareStatusResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
 
     protected static ?string $navigationGroup = 'Models & Statuses';
+       public static function getModelLabel(): string
+    {
+        return __('Estados de hardware');
+    }
 
     protected static ?int $navigationSort = 101;
 
@@ -34,6 +39,7 @@ class HardwareStatusResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Estado')
                     ->required()
                     ->maxLength(255),
                 ImagesAndNoteComponent::render(),
@@ -45,18 +51,29 @@ class HardwareStatusResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Estado')
                     ->searchable(),
-                ...CreatedAtUpdatedAtComponent::render(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                 Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Estado eliminado exitosamente')
+                            ->body('El estado de hardware ha sido eliminado correctamente.')
+                            ->success()
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -69,6 +86,8 @@ class HardwareStatusResource extends Resource
     {
         return [
             'index' => Pages\ManageHardwareStatuses::route('/'),
+            'create' => Pages\CreateHardwareStatus::route('/create'),
+            'edit' => Pages\EditHardwareStatus::route('/{record}/edit'),
         ];
     }
 }

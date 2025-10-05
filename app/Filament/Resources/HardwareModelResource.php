@@ -22,6 +22,11 @@ class HardwareModelResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
 
     protected static ?string $navigationGroup = 'Models & Statuses';
+       public static function getModelLabel(): string
+    {
+        return __('Modelos de hardware');
+    }
+
 
     protected static ?int $navigationSort = 101;
 
@@ -79,7 +84,13 @@ class HardwareModelResource extends Resource
      
      
     }
-
+    
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
 
     public static function getPages(): array
     {
@@ -88,7 +99,7 @@ class HardwareModelResource extends Resource
 
             'index' => Pages\ManageHardwareModels::route('/'),
             'create' => Pages\CreateHardwareModel::route('/create'),
-            /*'edit' => Pages\EditHardwareModel::route('/{record}/edit'), */
+            'edit' => Pages\EditHardwareModel::route('/{record}/edit'),
         ];
     }
 }

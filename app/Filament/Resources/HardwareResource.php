@@ -16,7 +16,9 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -172,7 +174,14 @@ class HardwareResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->sortable()->searchable(),
+                TextColumn::make('id')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('name')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Nombre del hardware')
+                    ->wrap(),
                 TextColumn::make('hardware_model.name')
                     ->sortable()
                     ->searchable()
@@ -220,10 +229,24 @@ class HardwareResource extends Resource
                 //FilamentExportHeaderAction::make('export'),
             ])
             ->actions([
-                EditAction::make(),
+                  Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Hardware eliminado exitosamente')
+                            ->body('El hardware ha sido eliminado correctamente.')
+                            ->success()
+                    ),
+
             ])
             ->bulkActions([
-                DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ])
             ]);
     }
 

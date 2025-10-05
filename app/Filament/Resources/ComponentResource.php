@@ -8,6 +8,7 @@ use App\Filament\Resources\Shared\ClsmComponent;
 use App\Filament\Resources\Shared\CreatedAtUpdatedAtComponent;
 use App\Filament\Resources\Shared\ImagesAndNoteComponent;
 use App\Filament\Resources\Shared\NcqComponent;
+use Filament\Notifications\Notification;
 use App\Models\Component;
 use App\Traits\HasCustomFields;
 use Filament\Facades\Filament;
@@ -121,22 +122,34 @@ class ComponentResource extends Resource
                     ->sortable()
                     ->label('Departamento')
                     ->alignRight(),
-                ...CreatedAtUpdatedAtComponent::render(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->headerActions([
-                //FilamentExportHeaderAction::make('export'),
+                 Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Componente eliminado exitosamente')
+                            ->body('El componente ha sido eliminado correctamente.')
+                            ->success()
+                    ),
+
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
+
+                
     public static function getRelations(): array
     {
         return [

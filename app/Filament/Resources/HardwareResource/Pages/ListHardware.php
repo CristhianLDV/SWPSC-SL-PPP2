@@ -32,7 +32,7 @@ class ListHardware extends ListRecords
 
         foreach ($statuses as $status) {
             $tabs[$status->name] = Tab::make($status->name)
-                ->modifyQueryUsing(fn (Builder $query) => $query->withStatus($status->name))
+                ->modifyQueryUsing(fn ($query) => $query->whereHas('status', fn ($q) => $q->where('name', $status->name)))
                 ->badge($status->hardware_count);
         }
 
