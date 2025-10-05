@@ -6,6 +6,7 @@ use App\Filament\Resources\HardwareModelResource\Pages;
 use App\Filament\Resources\Shared\CreatedAtUpdatedAtComponent;
 use App\Filament\Resources\Shared\ImagesAndNoteComponent;
 use App\Models\HardwareModel;
+use Filament\Notifications\Notification;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -51,26 +52,43 @@ class HardwareModelResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->label('Nombre'),
-                ...CreatedAtUpdatedAtComponent::render(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Modelo de hardware eliminado exitosamente')
+                            ->body('El modelo de hardware ha sido eliminado correctamente.')
+                            ->success()
+                    ),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+     
+     
     }
+
 
     public static function getPages(): array
     {
         return [
+        /*     'index' => Pages\ListHardwareModels::route('/'), */
+
             'index' => Pages\ManageHardwareModels::route('/'),
+            'create' => Pages\CreateHardwareModel::route('/create'),
+            /*'edit' => Pages\EditHardwareModel::route('/{record}/edit'), */
         ];
     }
 }

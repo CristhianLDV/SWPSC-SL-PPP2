@@ -69,7 +69,12 @@ class HardwareResource extends Resource
                 Grid::make()->schema([
                     Section::make('informacion basica')
                         ->description('Proporcionar detalles para facilitar un seguimiento preciso y efectivo')
-                        ->schema([
+                        ->schema([   
+                            TextInput::make('name')
+                                ->label('Nombre del hardware')
+                                ->required()
+                                ->maxLength(255)
+                                ->columnSpan(2),
                             BelongsToSelect::make('hardware_model_id')
                                 ->relationship('hardware_model', 'name')
                                 ->label('Modelo de hardware')
@@ -89,6 +94,7 @@ class HardwareResource extends Resource
                                 ->preload()
                                 ->columnSpan(2)
                                 ->required(),
+                      
                             BelongsToSelect::make('hardware_status_id')
                                 ->relationship('hardware_status', 'name')
                                 ->label('Estado del hardware')

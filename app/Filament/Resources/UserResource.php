@@ -67,9 +67,19 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
-                ...CreatedAtUpdatedAtComponent::render(),
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable()
+                    ->label('ID')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->label('Nombre')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->label('Correo electrónico')
+                    ->searchable(),
+
             ])
             ->filters([
             ])

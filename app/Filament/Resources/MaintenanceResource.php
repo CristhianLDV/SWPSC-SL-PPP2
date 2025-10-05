@@ -46,7 +46,7 @@ class MaintenanceResource extends Resource
         return $form
             ->schema([
                 Grid::make()->schema([
-                    Section::make('Basic information')
+                    Section::make('Información básica')
                         ->collapsible()
                         ->compact()
                         ->columns(3)
@@ -58,16 +58,16 @@ class MaintenanceResource extends Resource
                                 ->preload()
                                 ->required(),
                             TextInput::make('maintenance_type')
-                                ->label('Maintenance Type'),
+                                ->label('Tipo de mantenimiento'),
                             DatePicker::make('maintenance_date')
-                                ->label('Maintenance Date'),
+                                ->label('Fecha de mantenimiento'),
                             TextInput::make('performed_by')
-                                ->label('Performed By'),
+                                ->label('Realizado por'),
                             TextInput::make('cost')
-                                ->label('Cost')
+                                ->label('Costo')
                                 ->numeric()
                                 ->minValue(0.0)
-                                ->prefix(Filament::getTenant()->currency),
+                                ->prefix('S/'),
                         ]),
                     Section::make('QR Code')
                         ->columnSpan(2)

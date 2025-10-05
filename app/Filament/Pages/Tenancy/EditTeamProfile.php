@@ -19,14 +19,16 @@ class EditTeamProfile extends EditTenantProfile
     {
         return $form
             ->schema([
-                Section::make('Team settings')
+                Section::make('Configuración del equipo')
                     ->collapsible()
                     ->compact()
                     ->columns(3)
                     ->schema([
                         TextInput::make('name')
+                            ->label('Nombre del equipo')
                             ->required(),
                         Select::make('currency')
+                            ->label('Moneda')
                             ->options([
                                 'USD' => 'USD',
                                 'EUR' => 'EUR',
@@ -34,18 +36,18 @@ class EditTeamProfile extends EditTenantProfile
                             ->required(),
                     ]),
 
-                Section::make('Notification settings')
+                Section::make('Configuración de notificaciones')
                     ->collapsible()
                     ->compact()
                     ->columns(3)
                     ->schema([
                         TextInput::make('discordWebhookUrl')
                             ->label('Discord')
-                            ->helperText('Enter your Discord webhook URL to receive notifications in case of an alert.'),
+                            ->helperText('Ingrese la URL de su webhook de Discord para recibir notificaciones en caso de una alerta.'),
 
                         TextInput::make('slackWebhookUrl')
                             ->label('Slack')
-                            ->helperText('Enter your Slack webhook URL to receive notifications in case of an alert.'),
+                            ->helperText('Ingrese la URL de su webhook de Slack para recibir notificaciones en caso de una alerta.'),
                     ]),
             ]);
     }
