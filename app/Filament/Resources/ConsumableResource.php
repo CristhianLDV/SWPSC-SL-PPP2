@@ -9,6 +9,7 @@ use App\Filament\Resources\Shared\CreatedAtUpdatedAtComponent;
 use App\Filament\Resources\Shared\ImagesAndNoteComponent;
 use App\Filament\Resources\Shared\NcqComponent;
 use App\Models\Consumable;
+use Filament\Notifications\Notification;
 use App\Traits\HasCustomFields;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\DatePicker;
@@ -118,7 +119,6 @@ class ConsumableResource extends Resource
                     ->alignRight()
                     ->label('Personas'),
                 TextColumn::make('department.name')->searchable()->sortable()->alignRight(),
-                ...CreatedAtUpdatedAtComponent::render(),
             ])
             ->filters([
                 //
@@ -127,10 +127,24 @@ class ConsumableResource extends Resource
                 //FilamentExportHeaderAction::make('export'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Consumible eliminado exitosamente')
+                            ->body('El consumible ha sido eliminado correctamente.')
+                            ->success()
+                    ),
+
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
