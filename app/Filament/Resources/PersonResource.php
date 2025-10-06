@@ -20,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class PersonResource extends Resource
 {
@@ -121,19 +122,33 @@ class PersonResource extends Resource
                     ->color('gray')
                     ->alignRight()
                     ->label('Licencias'),
-                ...CreatedAtUpdatedAtComponent::render(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                 Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Docente eliminado exitosamente')
+                            ->body('El docente ha sido eliminado correctamente.')
+                            ->success()
+                    ),
+
             ])
             ->headerActions([
                 //FilamentExportHeaderAction::make('export'),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                
+                      Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 

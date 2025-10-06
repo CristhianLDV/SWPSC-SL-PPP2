@@ -13,6 +13,7 @@ use App\Models\Licence;
 use App\Traits\HasCustomFields;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\DatePicker;
+use Filament\Notifications\Notification;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -135,13 +136,24 @@ class LicenceResource extends Resource
                     ->color('gray')
                     ->alignRight()
                     ->label('Hardware'),
-                ...CreatedAtUpdatedAtComponent::render(),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+               Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success'),
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Licencia eliminada exitosamente')
+                            ->body('La licencia ha sido eliminada correctamente.')
+                            ->success()
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

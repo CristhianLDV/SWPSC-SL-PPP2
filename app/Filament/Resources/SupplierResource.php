@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class SupplierResource extends Resource
 {
@@ -53,26 +54,55 @@ class SupplierResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable(),
-                ...CreatedAtUpdatedAtComponent::render(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->button()
+                    ->color('success')
+                    ->icon('heroicon-o-pencil-square')
+                    ->modalHeading('Editar proveedor')
                     ->using(function (Model $record, array $data) {
-                        return static::handleRecordUpdateStatic($record, $data);
-                    }),
-                Tables\Actions\DeleteAction::make(),
+                $updated = static::handleRecordUpdateStatic($record, $data);
+
+                        Notification::make()
+                            ->title('Proveedor actualizado exitosamente')
+                            ->body('El proveedor ha sido actualizado correctamente.')
+                ->success()
+                ->send();
+
+                return $updated;
+             }),
+
+                Tables\Actions\DeleteAction::make()
+                    ->button()
+                    ->color('danger')
+                    ->icon('heroicon-o-trash')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Proveedor eliminado exitosamente')
+                            ->body('El proveedor ha sido eliminado correctamente.')
+                            ->success()
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                ->color('danger')
+            ->successNotification(
+                Notification::make()
+                    ->title('Proveedores eliminados exitosamente')
+                    ->body('Los proveedores seleccionados fueron eliminados correctamente.')
+                    ->success()
+                    ),
                 ]),
             ]);
     }

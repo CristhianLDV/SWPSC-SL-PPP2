@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DepartmentResource\Pages;
+use App\Filament\Resources\DepartmentResource\Pages\ManageDepartments;
 use App\Filament\Resources\Shared\CreatedAtUpdatedAtComponent;
 use App\Filament\Resources\Shared\ImagesAndNoteComponent;
 use App\Traits\HasCustomFields;
@@ -12,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class DepartmentResource extends Resource
 {
@@ -55,23 +57,53 @@ class DepartmentResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable(),
-                ...CreatedAtUpdatedAtComponent::render(),
+          
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->using(function (Model $record, array $data) {
-                        return static::handleRecordUpdateStatic($record, $data);
-                    }),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                ->button()
+                ->color('success')
+                ->icon('heroicon-o-pencil-square')
+                ->modalHeading('Editar departamento')
+                ->using(function (Model $record, array $data) {
+                $updated = static::handleRecordUpdateStatic($record, $data);
+
+                Notification::make()
+                ->title('Departamento actualizado exitosamente')
+                ->body('El departamento ha sido actualizado correctamente.')
+                ->success()
+                ->send();
+
+            return $updated;
+        }),
+
+            Tables\Actions\DeleteAction::make()
+                ->button()
+                ->color('danger')
+                ->icon('heroicon-o-trash')
+                ->successNotification(
+                    Notification::make()
+                        ->title('Departamento eliminado exitosamente')
+                        ->body('El departamento ha sido eliminado correctamente.')
+                        ->success()
+                        ),
+                    ])
+
+                    ->bulkActions([
+                    Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Departamentos eliminados exitosamente')
+                            ->body('Los departamentos seleccionados fueron eliminados correctamente.')
+                            ->success()
+                    ),
                 ]),
-            ]);
+        ]);
     }
 
     public static function getPages(): array

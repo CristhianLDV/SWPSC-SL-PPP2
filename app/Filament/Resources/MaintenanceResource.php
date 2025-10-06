@@ -20,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class MaintenanceResource extends Resource
 {
@@ -84,25 +85,77 @@ class MaintenanceResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->sortable()->searchable(),
-                TextColumn::make('hardware.hardware_model.name')->sortable()->searchable(),
-                TextColumn::make('maintenance_type')->sortable()->searchable()->badge(),
-                TextColumn::make('performed_by')->sortable()->searchable(),
-                TextColumn::make('maintenance_date')->sortable()->date()->alignRight(),
-
-                ...CreatedAtUpdatedAtComponent::render(),
+                TextColumn::make('id')
+                ->sortable()
+                ->label('ID')
+                ->searchable(),
+                TextColumn::make('hardware.hardware_model.name')
+                ->sortable()
+                ->label('Modelo de hardware')
+                ->searchable(),
+                TextColumn::make('maintenance_type')
+                ->sortable()
+                ->label('Tipo de mantenimiento')
+                ->searchable()
+                ->badge(),
+                TextColumn::make('performed_by')
+                ->sortable()
+                ->label('Realizado por')
+                ->searchable(),
+                TextColumn::make('maintenance_date')
+                ->sortable()
+                ->label('Fecha de mantenimiento')
+                ->date()
+                ->alignRight(),
+                TextColumn::make('cost')
+                ->sortable()
+                ->label('Costo')
+                ->prefix('S/')
+                ->alignRight(),
+            
             ])
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->using(function (Model $record, array $data) {
-                        return static::handleRecordUpdateStatic($record, $data);
-                    }),
-                Tables\Actions\DeleteAction::make(),
+                ->button()
+                ->color('success')
+                ->icon('heroicon-o-pencil-square')
+                ->modalHeading('Editar fabricante')
+                ->using(function (Model $record, array $data) {
+                $updated = static::handleRecordUpdateStatic($record, $data);
+
+                Notification::make()
+                ->title('Mantenimiento actualizado exitosamente')
+                ->body('El mantenimiento ha sido actualizado correctamente.')
+                ->success()
+                ->send();
+
+            return $updated;
+        }),
+
+            Tables\Actions\DeleteAction::make()
+                ->button()
+                ->color('danger')
+                ->icon('heroicon-o-trash')
+                ->successNotification(
+                    Notification::make()
+                        ->title('Mantenimiento eliminado exitosamente')
+                        ->body('El mantenimiento ha sido eliminado correctamente.')
+                        ->success()
+                        ),
             ])
             ->headerActions([])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Mantenimientos eliminados exitosamente')
+                            ->body('Los mantenimientos seleccionados fueron eliminados correctamente.')
+                            ->success()
+                    ),
+                ]),
             ]);
     }
 

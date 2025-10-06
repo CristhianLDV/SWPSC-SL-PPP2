@@ -6,6 +6,7 @@ use App\Filament\Resources\SupplierResource;
 use App\Traits\HasCustomFields;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Filament\Notifications\Notification;
 
 class ManageSuppliers extends ManageRecords
 {
@@ -16,10 +17,26 @@ class ManageSuppliers extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->using(function (array $data) {
-                    return $this->handleRecordCreation($data);
-                }),
-        ];
+        Actions\CreateAction::make()
+            ->label('Registrar Proveedor')
+            ->color('success')
+            ->icon('heroicon-o-plus-circle')
+    
+            ->createAnother(false)
+            ->modalSubmitActionLabel('Registrar')
+       
+            ->using(function (array $data) {
+                $record = $this->handleRecordCreation($data);
+
+                Notification::make()
+                    ->title('Proveedor creado exitosamente')
+                    ->body('El proveedor ha sido registrado correctamente.')
+                    ->success()
+                    ->send();
+
+                return $record;
+
+            }),
+    ];
     }
 }

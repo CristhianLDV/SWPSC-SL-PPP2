@@ -19,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class DepreciationResource extends Resource
 {
@@ -144,15 +145,44 @@ class DepreciationResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->using(function (Model $record, array $data) {
-                        return static::handleRecordUpdateStatic($record, $data);
-                    }),
-                Tables\Actions\DeleteAction::make(),
+               Tables\Actions\EditAction::make()
+                ->button()
+                ->color('success')
+                ->icon('heroicon-o-pencil-square')
+                ->modalHeading('Editar depreciación')
+                ->using(function (Model $record, array $data) {
+                $updated = static::handleRecordUpdateStatic($record, $data);
+
+                Notification::make()
+                ->title('Depreciación actualizado exitosamente')
+                ->body('La depreciación ha sido actualizada correctamente.')
+                ->success()
+                ->send();
+
+            return $updated;
+        }),
+
+            Tables\Actions\DeleteAction::make()
+                ->button()
+                ->color('danger')
+                ->icon('heroicon-o-trash')
+                ->successNotification(
+                    Notification::make()
+                        ->title('Depreciación eliminada exitosamente')
+                        ->body('La depreciación ha sido eliminada correctamente.')
+                        ->success()
+                        ),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Depreciaciones eliminadas exitosamente')
+                            ->body('Las depreciaciones seleccionadas fueron eliminadas correctamente.')
+                            ->success()
+                    ),
                 ]),
             ]);
     }

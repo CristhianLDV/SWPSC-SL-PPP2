@@ -32,6 +32,7 @@ class EditTeamProfile extends EditTenantProfile
                             ->options([
                                 'USD' => 'USD',
                                 'EUR' => 'EUR',
+                                
                             ])
                             ->required(),
                     ]),

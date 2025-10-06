@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class LocationResource extends Resource
 {
@@ -59,21 +60,50 @@ class LocationResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable(),
-                ...CreatedAtUpdatedAtComponent::render(),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->using(function (Model $record, array $data) {
-                        return static::handleRecordUpdateStatic($record, $data);
-                    }),
-                Tables\Actions\DeleteAction::make(),
+                ->button()
+                ->color('success')
+                ->icon('heroicon-o-pencil-square')
+                ->modalHeading('Editar Ubicación')
+                ->using(function (Model $record, array $data) {
+                $updated = static::handleRecordUpdateStatic($record, $data);
+
+                Notification::make()
+                ->title('Ubicación actualizada exitosamente')
+                ->body('La ubicación ha sido actualizada correctamente.')
+                ->success()
+                ->send();
+
+            return $updated;
+        }),
+
+            Tables\Actions\DeleteAction::make()
+                ->button()
+                ->color('danger')
+                ->icon('heroicon-o-trash')
+                ->successNotification(
+                    Notification::make()
+                        ->title('Ubicación eliminada exitosamente')
+                        ->body('La ubicación ha sido eliminada correctamente.')
+                        ->success()
+                        ),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                    ->color('danger')
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Ubicaciones eliminadas exitosamente')
+                            ->body('Las ubicaciones seleccionadas fueron eliminadas correctamente.')
+                            ->success()
+                    ),
                 ]),
             ]);
     }
