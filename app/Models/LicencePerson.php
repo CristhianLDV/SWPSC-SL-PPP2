@@ -16,12 +16,12 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class LicencePerson extends Pivot
 {
-    use HasFactory, HasTeam, Tenantable;
+    use HasFactory, HasTeam;
 
     protected $fillable = [
         'files',
         'notes',
-        'team_id',
+    
     ];
 
     protected $casts = [

@@ -16,12 +16,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class HardwarePerson extends Pivot
 {
-    use HasFactory, HasTeam, Tenantable;
+    use HasFactory, HasTeam;
 
     protected $fillable = [
         'files',
         'notes',
-        'team_id',
         'checked_in_at',
         'checked_out_at',
     ];

@@ -12,11 +12,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Supplier extends Model
 {
-    use HasFactory, HasTeam, Tenantable;
+    use HasFactory, HasTeam;
 
     protected $fillable = [
         'name',
-        'team_id',
         'files',
         'notes',
     ];

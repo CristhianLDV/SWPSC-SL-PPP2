@@ -79,7 +79,8 @@ class ComponentResource extends Resource
                         TextInput::make('purchase_cost')
                             ->label('Costo de compra')
                             ->numeric()
-                            ->prefix(Filament::getTenant()->currency),
+                            ->prefix('S/')
+                            ->minValue(0),
                         TextInput::make('model_number')
                             ->label('Modelo'),
                         TextInput::make('order_number')

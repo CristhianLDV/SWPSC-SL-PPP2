@@ -12,12 +12,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class HardwareModel extends Model
 {
-    use HasFactory, HasTeam, Tenantable;
+    use HasFactory, HasTeam;
 
     protected $fillable = [
         'name',
         'category_id',
-        'team_id',
         'files',
         'notes',
     ];

@@ -13,11 +13,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class HardwareStatus extends Model
 {
-    use HasFactory, HasTeam, Tenantable;
+    use HasFactory, HasTeam;
 
     protected $fillable = [
         'name',
-        'team_id',
         'files',
         'notes',
     ];

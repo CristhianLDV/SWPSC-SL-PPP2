@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Component extends Model
 {
-    use HasFactory, HasTeam, HasUniqueIdentifier, NotifiesOnModelChange, Quantifiable, Tenantable;
+    use HasFactory, HasTeam, HasUniqueIdentifier, NotifiesOnModelChange, Quantifiable;
 
     protected $quantifiableRelationships = ['hardware'];
 
@@ -35,7 +35,6 @@ class Component extends Model
         'supplier_id',
         'location_id',
         'manufacturer_id',
-        'team_id',
         'files',
         'notes',
         'qr_code',
@@ -50,7 +49,7 @@ class Component extends Model
         return $this->belongsToMany(Hardware::class)
             ->withTimestamps()
             ->using(ComponentHardware::class)
-            ->withPivot('team_id', 'id', 'checked_in_at', 'checked_out_at');
+            ->withPivot('id', 'checked_in_at', 'checked_out_at');
     }
 
     public function supplier(): BelongsTo

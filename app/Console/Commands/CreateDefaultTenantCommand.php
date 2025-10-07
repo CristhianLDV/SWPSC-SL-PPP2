@@ -3,8 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\HardwareStatus;
-use App\Models\Team;
-use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
@@ -16,54 +14,49 @@ class CreateDefaultTenantCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-default-tenant-command';
+    protected $signature = 'app:initialize-system';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Inicializa el sistema creando el usuario administrador y los estados de hardware por defecto.';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $tenant = Tenant::where('id', 'default')->first();
+        $this->info('Iniciando configuración del sistema...');
 
-        if ($tenant) {
-            return;
-        }
-
-        $tenant = Tenant::create(['id' => 'default']);
-        $tenant->domains()->create(['domain' => '127.0.0.1']);
-        $tenant->run(function () {
-            $team = Team::create([
-                'name' => 'Team 1',
+        // 1️⃣ Crear usuario administrador si no existe
+        if (! User::where('email', 'admin@marmotte.io')->exists()) {
+            User::create([
+                'name' => 'Administrador',
+                'email' => 'admin@marmotte.io',
+                'password' => Hash::make('marmotte.io'),
             ]);
 
-            if (! User::exists()) {
-                $user = User::create([
-                    'name' => 'Admin',
-                    'email' => 'admin@marmotte.io',
-                    'password' => Hash::make('marmotte.io'),
-                ]);
+            $this->info('Usuario administrador creado: admin@marmotte.io / marmotte.io');
+        } else {
+            $this->info('El usuario administrador ya existe.');
+        }
 
-                $team->users()->attach($user);
-            }
+        // 2️⃣ Crear los estados de hardware básicos
+        $hardwareStatuses = [
+            'En uso',
+            'En inventario',
+            'En reparación',
+            'Retirado',
+            'Perdido/robado',
+        ];
 
-            $hardwareStatusesNames = [
-                'Deployed',
-                'In Stock',
-                'In Repair',
-                'Retired',
-                'Lost/Stolen',
-            ];
+        foreach ($hardwareStatuses as $name) {
+            HardwareStatus::firstOrCreate(['name' => $name]);
+        }
 
-            foreach ($hardwareStatusesNames as $statusName) {
-                HardwareStatus::create(['team_id' => $team->id, 'name' => $statusName]);
-            }
-        });
+        $this->info('Estados de hardware inicializados correctamente.');
+        $this->info('✅ Sistema configurado con éxito.');
     }
 }

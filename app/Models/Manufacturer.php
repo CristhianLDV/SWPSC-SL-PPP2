@@ -12,11 +12,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Manufacturer extends Model
 {
-    use HasFactory, HasTeam, Tenantable;
+    use HasFactory, HasTeam;
 
     protected $fillable = [
         'name',
-        'team_id',
         'files',
         'notes',
     ];

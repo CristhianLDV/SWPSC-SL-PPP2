@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Hardware extends Model
 {
-    use HasFactory, HasTeam, HasUniqueIdentifier, Quantifiable, Tenantable;
+    use HasFactory, HasTeam, HasUniqueIdentifier, Quantifiable;
 
     protected $fillable = [
         'department_id',
@@ -41,7 +41,7 @@ class Hardware extends Model
         'requestable',
         'serial_number',
         'supplier_id',
-        'team_id',
+
     ];
 
     protected $casts = [
@@ -82,16 +82,16 @@ class Hardware extends Model
 
     public function components(): BelongsToMany
     {
-        return $this->belongsToMany(Component::class)->withTimestamps()->using(ComponentHardware::class)->withPivot('team_id', 'id', 'checked_in_at', 'checked_out_at');
+        return $this->belongsToMany(Component::class)->withTimestamps()->using(ComponentHardware::class)->withPivot('id', 'checked_in_at', 'checked_out_at');
     }
 
     public function licences(): BelongsToMany
     {
-        return $this->belongsToMany(Licence::class)->withTimestamps()->using(HardwareLicence::class)->withPivot('team_id', 'id', 'checked_in_at', 'checked_out_at');
+        return $this->belongsToMany(Licence::class)->withTimestamps()->using(HardwareLicence::class)->withPivot('id', 'checked_in_at', 'checked_out_at');
     }
 
     public function people(): BelongsToMany
     {
-        return $this->belongsToMany(Person::class)->withTimestamps()->using(HardwarePerson::class)->withPivot('team_id', 'id', 'checked_in_at', 'checked_out_at');
+        return $this->belongsToMany(Person::class)->withTimestamps()->using(HardwarePerson::class)->withPivot('id', 'checked_in_at', 'checked_out_at');
     }
 }

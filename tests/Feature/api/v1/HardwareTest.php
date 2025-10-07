@@ -5,7 +5,6 @@ namespace Tests\Feature\Api\V1;
 use App\Models\Hardware;
 use App\Models\HardwareModel;
 use App\Models\HardwareStatus;
-use App\Models\Team;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\ApiCase;
 
@@ -13,91 +12,91 @@ class HardwareTest extends ApiCase
 {
     use RefreshDatabase;
 
-    public function test_can_fetch_all_hardware()
+    public function test_can_fetch_all_hardware(): void
     {
-        $response = $this->get('/api/v1/hardware');
+        $response = $this->getJson('/api/v1/hardware');
         $response->assertStatus(200);
     }
 
-    public function test_can_create_hardware()
+    public function test_can_create_hardware(): void
     {
-        $team = Team::factory()->create();
-        $hardwareModel = HardwareModel::factory()->create(['team_id' => $team->id]);
-        $hardwareStatus = HardwareStatus::factory()->create(['team_id' => $team->id]);
+        $hardwareModel = HardwareModel::factory()->create();
+        $hardwareStatus = HardwareStatus::factory()->create();
 
         $hardwareData = [
             'name' => 'Sample Hardware',
             'order_number' => '12345',
-            'team_id' => $team->id,
             'hardware_model_id' => $hardwareModel->id,
             'hardware_status_id' => $hardwareStatus->id,
+            'serial_number' => 'SN-123',
+            'quantity' => 1,
+            'purchase_cost' => 200.00,
         ];
 
-        $response = $this->post('/api/v1/hardware', $hardwareData);
+        $response = $this->postJson('/api/v1/hardware', $hardwareData);
         $response->assertStatus(201);
 
-        $hardware = Hardware::latest()->first();
-        $this->assertEquals('Sample Hardware', $hardware->name);
+        $this->assertDatabaseHas('hardware', [
+            'name' => 'Sample Hardware',
+        ]);
     }
 
-    public function test_can_update_hardware()
+    public function test_can_update_hardware(): void
     {
         $hardware = Hardware::factory()->create();
-
         $updatedName = 'Updated Hardware Name';
-        $response = $this->put("/api/v1/hardware/{$hardware->id}", ['name' => $updatedName]);
-        $response->assertStatus(200);
 
-        $updatedHardware = Hardware::find($hardware->id);
-        $this->assertEquals($updatedHardware->name, $updatedName);
+        $response = $this->putJson("/api/v1/hardware/{$hardware->id}", [
+            'name' => $updatedName,
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('hardware', [
+            'id' => $hardware->id,
+            'name' => $updatedName,
+        ]);
     }
 
-    public function test_can_show_hardware()
+    public function test_can_show_hardware(): void
     {
         $hardware = Hardware::factory()->create();
 
-        $response = $this->get("/api/v1/hardware/{$hardware->id}");
+        $response = $this->getJson("/api/v1/hardware/{$hardware->id}");
         $response->assertStatus(200);
-
         $response->assertJsonFragment([
             'name' => $hardware->name,
         ]);
     }
 
-    public function test_can_delete_hardware()
+    public function test_can_delete_hardware(): void
     {
         $hardware = Hardware::factory()->create();
 
-        $response = $this->delete("/api/v1/hardware/{$hardware->id}");
+        $response = $this->deleteJson("/api/v1/hardware/{$hardware->id}");
         $response->assertStatus(204);
 
-        $this->assertDatabaseMissing('hardware', ['id' => $hardware->id]);
+        $this->assertDatabaseMissing('hardware', [
+            'id' => $hardware->id,
+        ]);
     }
 
-    public function test_show_returns_404_if_hardware_not_found()
+    public function test_show_returns_404_if_hardware_not_found(): void
     {
-        $nonExistentId = 999;
-
-        $response = $this->get("/api/v1/hardware/{$nonExistentId}");
+        $response = $this->getJson('/api/v1/hardware/999');
         $response->assertStatus(404);
     }
 
-    public function test_destroy_returns_404_if_hardware_not_found()
+    public function test_destroy_returns_404_if_hardware_not_found(): void
     {
-        $nonExistentId = 999;
-
-        $response = $this->delete("/api/v1/hardware/{$nonExistentId}");
+        $response = $this->deleteJson('/api/v1/hardware/999');
         $response->assertStatus(404);
     }
 
-    public function test_update_returns_404_if_hardware_not_found()
+    public function test_update_returns_404_if_hardware_not_found(): void
     {
-        $nonExistentId = 999;
-        $updatedData = [
+        $response = $this->putJson('/api/v1/hardware/999', [
             'name' => 'Updated Name',
-        ];
-
-        $response = $this->put("/api/v1/hardware/{$nonExistentId}", $updatedData);
+        ]);
         $response->assertStatus(404);
     }
 }

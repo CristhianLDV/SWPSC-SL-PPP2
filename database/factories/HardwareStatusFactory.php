@@ -3,20 +3,25 @@
 namespace Database\Factories;
 
 use App\Models\HardwareStatus;
-use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class HardwareStatusFactory extends Factory
 {
     protected $model = HardwareStatus::class;
 
-    public function definition()
+    public function definition(): array
     {
-        $team = Team::factory()->create();
-
         return [
-            'name' => $this->faker->randomElement(['Active', 'Inactive', 'Under Maintenance']),
-            'team_id' => $team->id,
+            'name' => $this->faker->randomElement([
+                'Activo',
+                'Inactivo',
+                'En mantenimiento',
+                'Retirado',
+                'Perdido o robado',
+            ]),
+            'color' => $this->faker->safeColorName(),
+            'notes' => $this->faker->sentence(),
+            'files' => null,
         ];
     }
 }

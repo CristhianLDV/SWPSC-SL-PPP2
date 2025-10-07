@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Maintenance extends Model
 {
-    use HasFactory, HasTeam, HasUniqueIdentifier, Tenantable;
+    use HasFactory, HasTeam, HasUniqueIdentifier;
 
     protected $fillable = [
         'hardware_id',
@@ -19,7 +19,6 @@ class Maintenance extends Model
         'maintenance_date',
         'performed_by',
         'cost',
-        'team_id',
         'files',
         'notes',
         'qr_code',

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Depreciation extends Model
 {
-    use HasFactory, HasTeam, HasUniqueIdentifier, Tenantable;
+    use HasFactory, HasTeam, HasUniqueIdentifier;
 
     protected $fillable = [
         'hardware_id',
@@ -24,7 +24,6 @@ class Depreciation extends Model
         'depreciation_expense',
         'accumulated_depreciation',
         'current_book_value',
-        'team_id',
         'files',
         'notes',
         'qr_code',

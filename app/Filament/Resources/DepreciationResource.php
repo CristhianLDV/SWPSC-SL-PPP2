@@ -74,12 +74,12 @@ class DepreciationResource extends Resource
                                 ->label('Precio de compra')
                                 ->type('number')
                                 ->required()
-                                ->prefix(Filament::getTenant()->currency),
+                                ->prefix('S/'),
                             TextInput::make('residual_value')
                                 ->label('Valor residual')
                                 ->type('number')
                                 ->required()
-                                ->prefix(Filament::getTenant()->currency),
+                                ->prefix('S/'),
                             TextInput::make('useful_life_years')
                                 ->label('Vida útil (años)')
                                 ->type('number')
@@ -115,11 +115,11 @@ class DepreciationResource extends Resource
                     ->date(),
                 Tables\Columns\TextColumn::make('purchase_price')
                     ->label('Precio de compra')
-                    ->money(Filament::getTenant()->currency)
+                    ->money('PEN')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('depreciation_expense')
-                    ->money(Filament::getTenant()->currency)
+                    ->money('PEN')
                     ->alignRight()
                     ->toggleable()
                     ->label('Gasto de depreciación')
@@ -127,14 +127,14 @@ class DepreciationResource extends Resource
                     ->toggledHiddenByDefault(true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('accumulated_depreciation')
-                    ->money(Filament::getTenant()->currency)
+                    ->money('PEN')
                     ->alignRight()
                     ->label('Depreciación acumulada')
                     ->searchable()
                     ->toggleable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('current_book_value')
-                    ->money(Filament::getTenant()->currency)
+                    ->money('PEN')
                     ->alignRight()
                     ->label('Valor en libros actual')
                     ->searchable()

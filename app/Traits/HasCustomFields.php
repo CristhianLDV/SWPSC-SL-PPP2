@@ -3,14 +3,15 @@
 namespace App\Traits;
 
 use App\Models\CustomField;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\ViewField;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 trait HasCustomFields
 {
+    /**
+     * Maneja la actualización de registros con campos personalizados.
+     */
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         return static::handleRecordUpdateStatic($record, $data);
@@ -34,6 +35,9 @@ trait HasCustomFields
         return $record;
     }
 
+    /**
+     * Maneja la creación de registros con campos personalizados.
+     */
     protected function handleRecordCreation(array $data): Model
     {
         $customFieldsData = [];
@@ -44,12 +48,7 @@ trait HasCustomFields
         }
 
         $record = new ($this->getModel())($data);
-
-        if ($tenant = Filament::getTenant()) {
-            $record = $this->associateRecordWithTenant($record, $tenant);
-        } else {
-            $record->save();
-        }
+        $record->save();
 
         if (! empty($customFieldsData)) {
             static::saveCustomFields($customFieldsData, $record);
@@ -58,19 +57,9 @@ trait HasCustomFields
         return $record;
     }
 
-    protected function associateRecordWithTenant(Model $record, Model $tenant): Model
-    {
-        $relationship = static::getResource()::getTenantRelationship($tenant);
-
-        if ($relationship instanceof HasManyThrough) {
-            $record->save();
-
-            return $record;
-        }
-
-        return $relationship->save($record);
-    }
-
+    /**
+     * Genera el esquema dinámico para los campos personalizados.
+     */
     public static function customFieldsSchema($modelClass)
     {
         $customFields = CustomField::where('applicable_model', $modelClass)->get();
@@ -93,20 +82,20 @@ trait HasCustomFields
 
             switch ($customField->field_type) {
                 case 'text':
-                    $component = \Filament\Forms\Components\TextInput::make('custom_fields.'.$customField->name)
+                    $component = \Filament\Forms\Components\TextInput::make('custom_fields.' . $customField->name)
                         ->label($customField->name)
                         ->formatStateUsing($valueCallback);
                     break;
 
                 case 'number':
-                    $component = \Filament\Forms\Components\TextInput::make('custom_fields.'.$customField->name)
+                    $component = \Filament\Forms\Components\TextInput::make('custom_fields.' . $customField->name)
                         ->label($customField->name)
                         ->numeric()
                         ->formatStateUsing($valueCallback);
                     break;
 
                 case 'date':
-                    $component = \Filament\Forms\Components\DatePicker::make('custom_fields.'.$customField->name)
+                    $component = \Filament\Forms\Components\DatePicker::make('custom_fields.' . $customField->name)
                         ->label($customField->name)
                         ->formatStateUsing($valueCallback);
                     break;
@@ -117,10 +106,9 @@ trait HasCustomFields
             }
         }
 
-        $columnsCount = 3;
+        $columnsCount = empty($schema) ? 1 : 3;
 
         if (empty($schema)) {
-            $columnsCount = 1;
             $schema[] = ViewField::make('text')->view('filament.components.text');
         }
 
@@ -130,6 +118,9 @@ trait HasCustomFields
             ->schema($schema);
     }
 
+    /**
+     * Guarda los valores de los campos personalizados asociados al modelo.
+     */
     public static function saveCustomFields(array $customFieldsData, Model $model)
     {
         foreach ($customFieldsData as $fieldName => $fieldValue) {
@@ -140,7 +131,6 @@ trait HasCustomFields
             if ($customField) {
                 $value = $model->customFieldValues()->firstOrNew([
                     'custom_field_id' => $customField->id,
-                    'team_id' => Filament::getTenant()->id,
                 ]);
 
                 $value->value = $fieldValue;

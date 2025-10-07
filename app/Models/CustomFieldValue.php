@@ -15,7 +15,7 @@ class CustomFieldValue extends Model
         'value',
         'model_id',
         'model_type',
-        'team_id',
+
     ];
 
     public function customField()

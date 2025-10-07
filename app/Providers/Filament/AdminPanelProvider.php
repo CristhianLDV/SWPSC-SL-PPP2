@@ -2,16 +2,11 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\Tenancy\EditTeamProfile;
-use App\Filament\Pages\Tenancy\RegisterTeam;
-use App\Http\Middleware\ApplyTenantScopes;
-use App\Http\Middleware\InitializeTenancyByCookie;
-use App\Models\Team;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -30,21 +25,23 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->darkMode(true)
             ->id('admin')
             ->path('admin')
+            ->darkMode(true)
             ->plugins([
+                
+                FilamentShieldPlugin::make(),
                 FilamentApexChartsPlugin::make(),
             ])
             ->login()
             ->colors([
                 'primary' => [
-                   50 => '#eff6ff',
+                    50 => '#eff6ff',
                     100 => '#dbeafe',
                     200 => '#bfdbfe',
                     300 => '#93c5fd',
                     400 => '#60a5fa',
-                    500 => '#3b82f6', // Azul principal
+                    500 => '#3b82f6',
                     600 => '#2563eb',
                     700 => '#1d4ed8',
                     800 => '#1e40af',
@@ -55,12 +52,10 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                Pages\Dashboard::class, // ✅ solo páginas aquí
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([])
             ->middleware([
-                InitializeTenancyByCookie::class,
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
@@ -71,31 +66,13 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->databaseNotifications()
-            ->databaseNotificationsPolling('30s')
             ->authMiddleware([
-                InitializeTenancyByCookie::class,
                 Authenticate::class,
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->tenant(Team::class)
-            ->tenantMenuItems([
-                MenuItem::make()
-                    ->label('Usuarios')
-                    ->url(fn (): string => '/admin/'.Filament::getTenant()->id.'/users'),
-                MenuItem::make()
-                    ->label('Modelos de hardware')
-                    ->url(fn (): string => '/admin/'.Filament::getTenant()->id.'/hardware-models'),
-                MenuItem::make()
-                    ->label('Estados de hardware')
-                    ->url(fn (): string => '/admin/'.Filament::getTenant()->id.'/hardware-statuses'),
-            ])
-            ->tenantRegistration(RegisterTeam::class)
-            ->tenantProfile(EditTeamProfile::class)
-            ->tenantMiddleware([
-                ApplyTenantScopes::class,
-            ], isPersistent: true)
+            ->brandLogo(asset('logo.png'))
             ->brandLogoHeight('60px')
-            ->brandLogo(asset('logo.png'));
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s');
     }
 }

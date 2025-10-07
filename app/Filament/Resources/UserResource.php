@@ -57,9 +57,8 @@ class UserResource extends Resource
                 TextInput::make('password')
                     ->label('Contraseña')
                     ->password()
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
-                ImagesAndNoteComponent::render(),
+                      ->dehydrateStateUsing(fn ($state) => bcrypt($state))
+                ->required(fn (string $context) => $context === 'create'),
             ])->columns(1);
     }
 
@@ -119,6 +118,8 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomField extends Model
 {
-    use HasFactory, HasTeam, Tenantable;
+    use HasFactory, HasTeam;
 
     protected $fillable = ['name', 'field_type', 'applicable_model'];
 
