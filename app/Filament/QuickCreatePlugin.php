@@ -68,43 +68,41 @@ class QuickCreatePlugin implements Plugin
 
     public function getResources(): array
     {
-        $resources = filled($this->getIncludes())
-            ? $this->getIncludes()
-            : $this->evaluate($this->getResourcesUsing);
+    $resources = filled($this->getIncludes())
+        ? $this->getIncludes()
+        : $this->evaluate($this->getResourcesUsing);
 
-        $list = collect($resources)
-            ->filter(function ($item) {
-                return ! in_array($item, $this->getExcludes());
-            })
-            ->map(function ($resourceName): ?array {
-                $resource = app($resourceName);
+    $list = collect($resources)
+        ->filter(fn ($item) => ! in_array($item, $this->getExcludes()))
+        ->map(function ($resourceName): ?array {
+            $resource = app($resourceName);
 
-                if (Filament::hasTenancy() && ! Filament::getTenant()) {
-                    return null;
-                }
-
-                if ($resource->canCreate()) {
-                    $actionName = 'create_'.Str::of($resource->getModel())->replace('\\', '')->snake();
-
-                    return [
-                        'resource_name' => $resourceName,
-                        'label' => Str::ucfirst($resource->getModelLabel()),
-                        'model' => $resource->getModel(),
-                        'icon' => $resource->getNavigationIcon(),
-                        'action_name' => $actionName,
-                        'action' => ! $resource->hasPage('create') ? 'mountAction(\''.$actionName.'\')' : null,
-                        'url' => $resource->hasPage('create') ? $resource::getUrl('create') : null,
-                    ];
-                }
-
+            // 👇 Eliminamos completamente la verificación de tenancy
+            if (! $resource->canCreate()) {
                 return null;
-            })
-            ->when($this->isSortable(), fn ($collection) => $collection->sortBy('label'))
-            ->values()
-            ->toArray();
+            }
 
-        return array_filter($list);
+            $actionName = 'create_' . Str::of($resource->getModel())
+                ->replace('\\', '')
+                ->snake();
+
+            return [
+                'resource_name' => $resourceName,
+                'label' => Str::ucfirst($resource->getModelLabel()),
+                'model' => $resource->getModel(),
+                'icon' => $resource->getNavigationIcon(),
+                'action_name' => $actionName,
+                'action' => ! $resource->hasPage('create') ? "mountAction('{$actionName}')" : null,
+                'url' => $resource->hasPage('create') ? $resource::getUrl('create') : null,
+            ];
+        })
+        ->when($this->isSortable(), fn ($collection) => $collection->sortBy('label'))
+        ->values()
+        ->toArray();
+
+    return array_filter($list);
     }
+
 
     public function getResourcesUsing(Closure $callback): static
     {

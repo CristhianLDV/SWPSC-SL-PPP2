@@ -21,7 +21,7 @@ class Alert extends Model
                     'record' => 'Consumable',
                     'record_name' => $consumable->name,
                     'record_url' => 'consumables',
-                    'threshold' => 'less than or equal to '.$consumable->threshold,
+                    'threshold' => 'Menor o igual a '.$consumable->threshold,
                     'quantity_left' => $consumable->totalQuantityLeft(),
                     'quantity' => $consumable->quantity,
                 ];
@@ -36,7 +36,7 @@ class Alert extends Model
                     'record' => 'Licence',
                     'record_name' => $licence->name,
                     'record_url' => 'licences',
-                    'threshold' => 'less than or equal to '.$licence->threshold,
+                    'threshold' => 'Menor o igual a '.$licence->threshold,
                     'quantity_left' => $licence->totalQuantityLeft(),
                     'quantity' => $licence->quantity,
                 ];
@@ -51,7 +51,7 @@ class Alert extends Model
                     'record' => 'Component',
                     'record_name' => $component->name,
                     'record_url' => 'components',
-                    'threshold' => 'less than or equal to '.$component->threshold,
+                    'threshold' => 'Menor o igual a '.$component->threshold,
                     'quantity_left' => $component->totalQuantityLeft(),
                     'quantity' => $component->quantity,
                 ];

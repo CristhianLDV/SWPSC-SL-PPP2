@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\LicenceResource\RelationManagers;
 
 use App\Models\Hardware;
-use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -15,9 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class HardwareRelationManager extends RelationManager
 {
     protected static string $relationship = 'hardware';
-
     protected bool $allowsDuplicates = true;
-
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
@@ -27,12 +24,12 @@ class HardwareRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+        return $form->schema([
+            Forms\Components\TextInput::make('name')
+                ->label('Nombre del hardware')
+                ->required()
+                ->maxLength(255),
+        ]);
     }
 
     public function table(Table $table): Table
@@ -41,46 +38,54 @@ class HardwareRelationManager extends RelationManager
             ->allowDuplicates()
             ->columns([
                 TextColumn::make('hardware_model.name')
+                    ->label('Modelo de hardware')
                     ->badge()
-                    ->url(fn (Hardware $record) => '/admin/'.Filament::getTenant()->id."/hardware/$record->hardware_id/edit")
+                    ->url(fn (Hardware $record) => "/admin/hardware/{$record->hardware_id}/edit")
                     ->iconPosition('after')
-                    ->searchable()
-                    ->icon('heroicon-o-arrow-right'),
+                    ->icon('heroicon-o-arrow-right')
+                    ->searchable(),
 
                 TextColumn::make('hardware_status.name')
+                    ->label('Estado')
                     ->sortable()
                     ->badge()
                     ->color('success')
                     ->searchable()
                     ->iconPosition('after'),
-                TextColumn::make('serial_number')->sortable()->alignRight()->searchable()->badge()->color('info'),
-                TextColumn::make('checked_out_at')->label('Checked out at')->alignRight(),
-                TextColumn::make('checked_in_at')->label('Checked in at')->alignRight(),
+
+                TextColumn::make('serial_number')
+                    ->label('Número de serie')
+                    ->sortable()
+                    ->alignRight()
+                    ->searchable()
+                    ->badge()
+                    ->color('info'),
+
+                TextColumn::make('checked_out_at')
+                    ->label('Fecha de asignación')
+                    ->alignRight(),
+
+                TextColumn::make('checked_in_at')
+                    ->label('Fecha de devolución')
+                    ->alignRight(),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->headerActions([
-                // ...
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                    ->disabled(function (RelationManager $livewire) {
-                        return false;
-                    })
-                    ->label('Attach to a hardware'),
+                    ->disabled(false)
+                    ->label('Vincular hardware'),
             ])
             ->actions([
                 Tables\Actions\Action::make('check_in')
-                    ->label('Detach')
-                    ->action(function (Hardware $record) {
-                        $record->pivot->find($record->pivot_id)->touch('checked_in_at');
-                    })
+                    ->label('Desvincular')
                     ->requiresConfirmation()
-                    ->visible(function (Hardware $record) {
-                        return empty($record->checked_in_at);
-                    }),
+                    ->action(function (Hardware $record) {
+                        // Evita error si pivot_id no existe
+                        $record->pivot?->touch('checked_in_at');
+                    })
+                    ->visible(fn (Hardware $record) => empty($record->checked_in_at)),
             ])
-            ->bulkActions([
-            ]);
+            ->bulkActions([]);
     }
 }

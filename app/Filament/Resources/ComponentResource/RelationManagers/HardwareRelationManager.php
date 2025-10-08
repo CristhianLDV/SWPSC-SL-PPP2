@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\ComponentResource\RelationManagers;
 
 use App\Models\Hardware;
-use Filament\Facades\Filament;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -13,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 class HardwareRelationManager extends RelationManager
 {
     protected static string $relationship = 'hardware';
-
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
@@ -28,7 +26,7 @@ class HardwareRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('hardware_model.name')
                     ->badge()
-                    ->url(fn (Hardware $record) => '/admin/'.Filament::getTenant()->id."/hardware/$record->hardware_id/edit")
+                    ->url(fn (Hardware $record) => "/admin/hardware/{$record->hardware_id}/edit")
                     ->iconPosition('after')
                     ->searchable()
                     ->icon('heroicon-o-arrow-right'),
@@ -39,13 +37,23 @@ class HardwareRelationManager extends RelationManager
                     ->color('success')
                     ->searchable()
                     ->iconPosition('after'),
-                TextColumn::make('serial_number')->sortable()->alignRight()->searchable()->badge()->color('info'),
-                TextColumn::make('checked_out_at')->label('Checked out at')->alignRight(),
-                TextColumn::make('checked_in_at')->label('Checked in at')->alignRight(),
+
+                TextColumn::make('serial_number')
+                    ->sortable()
+                    ->alignRight()
+                    ->searchable()
+                    ->badge()
+                    ->color('info'),
+
+                TextColumn::make('checked_out_at')
+                    ->label('Checked out at')
+                    ->alignRight(),
+
+                TextColumn::make('checked_in_at')
+                    ->label('Checked in at')
+                    ->alignRight(),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
@@ -58,9 +66,7 @@ class HardwareRelationManager extends RelationManager
                         $record->pivot->find($record->pivot_id)->touch('checked_in_at');
                     })
                     ->requiresConfirmation()
-                    ->visible(function (Hardware $record) {
-                        return empty($record->checked_in_at);
-                    }),
+                    ->visible(fn (Hardware $record) => empty($record->checked_in_at)),
             ]);
     }
 }

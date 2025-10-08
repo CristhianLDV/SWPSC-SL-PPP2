@@ -144,7 +144,7 @@ class HardwareResource extends Resource
                             ->label('Costo de compra')
                             ->numeric()
                             ->prefix('S/'),
-                            /* ->prefix(Filament::getTenant()->currency), */
+                     
                         TextInput::make('order_number')
                             ->label('Número de orden'),
                         DatePicker::make('end_of_life_date')

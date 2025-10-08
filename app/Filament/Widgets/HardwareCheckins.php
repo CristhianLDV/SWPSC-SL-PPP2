@@ -3,7 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Models\HardwarePerson;
-use Filament\Facades\Filament;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -22,17 +21,26 @@ class HardwareCheckins extends BaseWidget
     {
         return $table
             ->query(
-                HardwarePerson::query()->latest('checked_in_at')->whereNotNull('checked_in_at')
+                HardwarePerson::query()
+                    ->latest('checked_in_at')
+                    ->whereNotNull('checked_in_at')
             )
             ->columns([
                 TextColumn::make('hardware')
+                    ->label('Hardware')
                     ->badge()
-                    ->url(fn (HardwarePerson $record) => '/admin/'.Filament::getTenant()->id.'/hardware/'.$record->hardware->id.'/edit')
-                    ->getStateUsing(fn (HardwarePerson $record): string => $record->hardware->hardware_model->name)
+                    ->url(fn (HardwarePerson $record) => "/admin/hardware/{$record->hardware->id}/edit")
+                    ->getStateUsing(fn (HardwarePerson $record): string => $record->hardware->hardware_model->name ?? 'Sin modelo')
                     ->iconPosition('after')
                     ->icon('heroicon-o-arrow-right'),
-                TextColumn::make('person.name'),
-                TextColumn::make('checked_in_at')->dateTime()->alignRight(),
+
+                TextColumn::make('person.name')
+                    ->label('Asignado a'),
+
+                TextColumn::make('checked_in_at')
+                    ->label('Fecha de entrada')
+                    ->dateTime()
+                    ->alignRight(),
             ]);
     }
 }

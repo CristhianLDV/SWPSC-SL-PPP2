@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\HardwareResource\RelationManagers;
 
 use App\Models\Component;
-use Filament\Facades\Filament;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -30,36 +29,40 @@ class ComponentsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('name')
                     ->badge()
-                    ->url(fn (Component $record) => '/admin/'.Filament::getTenant()->id."/components/$record->component_id/edit")
+                    ->url(fn (Component $record) => "/admin/components/{$record->component_id}/edit")
                     ->getStateUsing(fn (Component $record): string => $record->name)
                     ->iconPosition('after')
                     ->searchable()
                     ->icon('heroicon-o-arrow-right'),
 
-                TextColumn::make('model_number')->badge()->color('info')->searchable(),
-                TextColumn::make('checked_out_at')->label('Checked out at')->alignRight(),
-                TextColumn::make('checked_in_at')->label('Checked in at')->alignRight(),
+                TextColumn::make('model_number')
+                    ->badge()
+                    ->color('info')
+                    ->label('Modelo')
+                    ->searchable(),
+
+                TextColumn::make('checked_out_at')
+                    ->label('Fecha de salida')
+                    ->alignRight(),
+
+                TextColumn::make('checked_in_at')
+                    ->label('Fecha de retorno')
+                    ->alignRight(),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->headerActions([
-                // ...
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                    ->label('Attach a component'),
+                    ->label('Adjuntar componente'),
             ])
             ->actions([
-                // ...
                 Tables\Actions\Action::make('check_in')
-                    ->label('Detach')
+                    ->label('Desvincular')
                     ->action(function (Component $record) {
-                        $record->pivot->find($record->pivot_id)->touch('checked_in_at');
+                        $record->pivot->find($record->pivot_id)?->touch('checked_in_at');
                     })
                     ->requiresConfirmation()
-                    ->visible(function (Component $record) {
-                        return empty($record->checked_in_at);
-                    }),
+                    ->visible(fn (Component $record) => empty($record->checked_in_at)),
             ]);
     }
 }

@@ -81,7 +81,6 @@ class ConsumableResource extends Resource
                             ->label('Costo de compra')  
                             ->numeric()
                             ->prefix('S/'),
-                            /* ->prefix(Filament::getTenant()->currency), */
                         TextInput::make('model_number')
                             ->label('Modelo'),
                         TextInput::make('order_number')
