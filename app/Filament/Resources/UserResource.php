@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\Shared\CreatedAtUpdatedAtComponent;
 use App\Filament\Resources\Shared\ImagesAndNoteComponent;
 use App\Filament\Resources\UserResource\Pages;
+use Filament\Forms\Components\Select;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -20,8 +22,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static bool $shouldRegisterNavigation = false;
-
+  
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $navigationGroup = 'Logins';
@@ -59,6 +60,15 @@ class UserResource extends Resource
                     ->password()
                       ->dehydrateStateUsing(fn ($state) => bcrypt($state))
                 ->required(fn (string $context) => $context === 'create'),
+                 Select::make('roles')
+                    ->label('Rol')
+                    ->relationship('roles', 'name') // Usa la relación de Spatie Permission
+                    ->options(Role::pluck('name', 'id')) // Lista de roles disponibles
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->helperText('Asigna uno o más roles a este usuario.'),
+
             ])->columns(1);
     }
 
@@ -78,7 +88,9 @@ class UserResource extends Resource
                     ->sortable()
                     ->label('Correo electrónico')
                     ->searchable(),
-
+                 Tables\Columns\TagsColumn::make('roles.name')
+                    ->label('Roles')
+                    ->limit(2),
             ])
             ->filters([
             ])

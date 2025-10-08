@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Traits\HasTeam;
-use App\Traits\Tenantable;
+
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class ComponentHardware extends Pivot
 {
-    use HasFactory, HasTeam;
+    use HasFactory;
 
     protected $fillable = [
         'files',

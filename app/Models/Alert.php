@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\HasTeam;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Alert extends Model
 {
-    use HasTeam, \Sushi\Sushi;
+   use \Sushi\Sushi;
 
     public function getRows(): array
     {

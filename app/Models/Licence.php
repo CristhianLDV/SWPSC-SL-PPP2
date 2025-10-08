@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Traits\HasTeam;
+
 use App\Traits\HasUniqueIdentifier;
 use App\Traits\NotifiesOnModelChange;
 use App\Traits\Quantifiable;
-use App\Traits\Tenantable;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Licence extends Model
 {
-    use HasFactory, HasTeam, HasUniqueIdentifier, NotifiesOnModelChange, Quantifiable;
+    use HasFactory, HasUniqueIdentifier, NotifiesOnModelChange, Quantifiable;
 
     protected $quantifiableRelationships = ['hardware', 'people'];
 

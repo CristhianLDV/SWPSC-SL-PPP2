@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Traits\HasTeam;
-use App\Traits\Tenantable;
+
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class HardwareStatus extends Model
 {
-    use HasFactory, HasTeam;
+    use HasFactory;
 
     protected $fillable = [
         'name',

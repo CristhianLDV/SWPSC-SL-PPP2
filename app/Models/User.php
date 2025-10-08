@@ -2,28 +2,18 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Collection;
-use Spatie\Permission\Traits\HasRoles; //
+use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements FilamentUser, HasTenants
+class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles; //
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -38,31 +28,14 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         'password' => 'hashed',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    public function getTenants(Panel $panel): Collection
-    {
-        return $this->teams;
-    }
-
-    public function teams(): BelongsToMany
-    {
-        return $this->belongsToMany(Team::class);
-    }
-
-    public function canAccessTenant(Model $tenant): bool
-    {
-        return $this->teams->contains($tenant);
-    }
-
+    /**
+     * Permite acceso al panel Filament.
+     */
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
