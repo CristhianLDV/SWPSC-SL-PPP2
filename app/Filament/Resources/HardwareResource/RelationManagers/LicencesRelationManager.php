@@ -15,6 +15,11 @@ class LicencesRelationManager extends RelationManager
 {
     protected static string $relationship = 'licences';
     protected static ?string $recordTitleAttribute = 'name';
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+        {
+            return 'Licencias'; // Traducción del título de la pestaña
+        }
+
 
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
     {
@@ -41,6 +46,7 @@ class LicencesRelationManager extends RelationManager
                     ->url(fn (Licence $record) => "/admin/licences/{$record->licence_id}/edit")
                     ->getStateUsing(fn (Licence $record): string => $record->name)
                     ->iconPosition('after')
+                    ->label('Licencia')
                     ->searchable()
                     ->icon('heroicon-o-arrow-right'),
 

@@ -17,6 +17,10 @@ class ComponentsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'name';
 
+       public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return 'Componentes'; // Traducción del título de la pestaña
+    }
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
     {
         return $ownerRecord->components()->count();
@@ -32,6 +36,7 @@ class ComponentsRelationManager extends RelationManager
                     ->url(fn (Component $record) => "/admin/components/{$record->component_id}/edit")
                     ->getStateUsing(fn (Component $record): string => $record->name)
                     ->iconPosition('after')
+                    ->label('Componente')
                     ->searchable()
                     ->icon('heroicon-o-arrow-right'),
 
