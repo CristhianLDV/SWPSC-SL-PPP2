@@ -27,16 +27,17 @@ class PersonResource extends Resource
     use HasCustomFields;
 
     protected static ?string $model = Person::class;
-
+    
     protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationGroup = 'Responsables y áreas';
+    protected static ?string $navigationLabel = 'Responsables';
+    protected static ?string $modelLabel = 'Responsables';
+    protected static ?string $pluralModelLabel = 'Responsables';
+    protected static ?string $recordTitleAttribute = 'name'; 
 
-    protected static ?string $navigationGroup = 'Componentes de I.E';
+    
 
-    public static function getModelLabel(): string
-        {
-            return __('Docentes');
-        }
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 9;
 
     public static function getNavigationBadge(): ?string
     {
@@ -103,21 +104,21 @@ class PersonResource extends Resource
                 TextColumn::make('phone')->sortable()->label('Teléfono')->searchable(),
                 TextColumn::make('hardware_count')
                     ->counts('hardware')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])." out of $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
                     ->label('Hardware'),
                 TextColumn::make('consumables_count')
                     ->counts('consumables')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['consumables'])." out of $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['consumables'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
                     ->label('Consumibles'),
                 TextColumn::make('licences_count')
                     ->counts('licences')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['licences'])." out of $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['licences'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()

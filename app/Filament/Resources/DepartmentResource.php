@@ -20,13 +20,13 @@ class DepartmentResource extends Resource
     use HasCustomFields;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static ?string $navigationGroup = 'Responsables y áreas';
+    protected static ?string $navigationLabel = 'Áreas';
+    protected static ?string $modelLabel = 'Áreas';
+    protected static ?string $pluralModelLabel = 'Áreas';
+    protected static ?string $recordTitleAttribute = 'name'; 
 
-    protected static ?string $navigationGroup = 'Componentes de I.E';
-     public static function getModelLabel(): string
-    {
-        return __('Departamentos');
-    }
-    protected static ?int $navigationSort = 81;
+    protected static ?int $navigationSort = 12;
 
     public static function getNavigationBadge(): ?string
     {

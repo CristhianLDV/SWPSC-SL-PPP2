@@ -16,19 +16,18 @@ use Filament\Tables\Table;
 class HardwareModelResource extends Resource
 {
     protected static ?string $model = HardwareModel::class;
-
+/* 
     protected static bool $shouldRegisterNavigation = false;
+ */
+    protected static ?string $navigationIcon = 'heroicon-o-cpu-chip';
 
-    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
+    protected static ?string $navigationGroup = 'Configuraciones del sistema';
+    protected static ?string $navigationLabel = 'Modelos de equipos ';
+    protected static ?string $modelLabel = 'Modelos de equipo ';
+    protected static ?string $pluralModelLabel = 'Modelos de equipos';
+    protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationGroup = 'Models & Statuses';
-       public static function getModelLabel(): string
-    {
-        return __('Modelos de hardware');
-    }
-
-
-    protected static ?int $navigationSort = 101;
+    protected static ?int $navigationSort = 32;
 
     public static function getNavigationBadge(): ?string
     {

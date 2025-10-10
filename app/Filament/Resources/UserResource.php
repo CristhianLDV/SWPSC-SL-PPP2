@@ -24,12 +24,14 @@ class UserResource extends Resource
 
   
     protected static ?string $navigationIcon = 'heroicon-o-user';
-
-    protected static ?string $navigationGroup = 'Logins';
-
-    protected static ?string $pluralLabel = 'Usuarios';       // Títulos/plural
-    protected static ?string $modelLabel = 'Usuario';         // Singular
-    protected static ?int $navigationSort = 1000;
+    protected static ?string $navigationGroup = 'Configuraciones del sistema';
+    protected static ?string $navigationLabel = 'Usuarios ';
+    protected static ?string $modelLabel = 'Usuario';
+    protected static ?string $pluralModelLabel = 'Usuarios ';
+    protected static ?string $recordTitleAttribute = 'name';
+    
+   
+    protected static ?int $navigationSort = 36;
 
     public static function scopeEloquentQueryToTenant(Builder $query, ?Model $tenant): Builder
     {

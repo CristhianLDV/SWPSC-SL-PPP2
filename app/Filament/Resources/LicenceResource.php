@@ -30,19 +30,18 @@ class LicenceResource extends Resource
     protected static ?string $model = Licence::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
-
-    protected static ?string $navigationGroup = 'Activos Intangibles';
-
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Inventario Institucional';
+    protected static ?string $navigationLabel = ' Licencias de software';
+    protected static ?string $modelLabel = ' Licencias de software';
+    protected static ?string $pluralModelLabel = ' Licencias de software';
+    protected static ?string $recordTitleAttribute = 'name'; 
+    protected static ?int $navigationSort = 8;
 
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
-     public static function getModelLabel(): string
-    {
-        return __('Licencias');
-    }
+  
     public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
@@ -117,21 +116,21 @@ class LicenceResource extends Resource
                 TextColumn::make('quantity')
                     ->label('Cantidad total')
                     ->searchable()
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()." out of $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()." de $state")
                     ->sortable()
                     ->color(fn (Model $record): string => $record->totalQuantityLeft() <= 0 ? 'danger' : 'gray')
                     ->alignRight()
                     ->label('Cantidad'),
                 TextColumn::make('people_count')
                     ->counts('people')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])." out of $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
                     ->label('Personas'),
                 TextColumn::make('hardware_count')
                     ->counts('hardware')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])." out of $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()

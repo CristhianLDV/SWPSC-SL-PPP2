@@ -14,6 +14,15 @@ class AlertsResource extends Resource
     protected static ?string $model = Alert::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
+     protected static ?string $navigationGroup = 'Soporte Técnico';
+    protected static ?string $navigationLabel = 'Alertas ';
+    protected static ?string $modelLabel = 'Alerta';
+    protected static ?string $pluralModelLabel = 'Alertas ';
+    protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 27;
+
+
 
     public static function canCreate(): bool
     {

@@ -40,7 +40,8 @@ class ListHardware extends ListRecords
         }
 
         return [
-            'all' => Tab::make('All Hardware')->badge(Hardware::count()),
+            'all' => Tab::make(' Todos los equipos de computo
+            ')->badge(Hardware::count()),
             ...$tabs,
         ];
     }

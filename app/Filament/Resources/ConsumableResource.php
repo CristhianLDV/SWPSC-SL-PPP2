@@ -30,12 +30,14 @@ class ConsumableResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-path-rounded-square';
 
-    protected static ?string $navigationGroup = 'Activos físicos';
-    public static function getModelLabel(): string
-    {
-        return __('Consumibles');
-    }
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationGroup = 'Inventario Institucional';
+ 
+    protected static ?string $navigationLabel = 'Consumibles';
+    protected static ?string $modelLabel = 'Consumibles';
+    protected static ?string $pluralModelLabel = 'Consumibles';
+    protected static ?string $recordTitleAttribute = 'name'; 
+    protected static ?int $navigationSort = 7;
+   
 
     public static function getNavigationBadge(): ?string
     {
@@ -105,14 +107,14 @@ class ConsumableResource extends Resource
                 TextColumn::make('quantity')
                     ->searchable()
                     ->label('Cantidad total')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()." out of $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()." de $state")
                     ->sortable()
                     ->color(fn (Model $record): string => $record->totalQuantityLeft() <= 0 ? 'danger' : 'gray')
                     ->alignRight()
                     ->label('Cantidad'),
                 TextColumn::make('people_count')
                     ->counts('people')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])." out of $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()

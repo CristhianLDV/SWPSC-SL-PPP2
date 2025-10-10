@@ -30,12 +30,13 @@ class ComponentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-puzzle-piece';
 
-    protected static ?string $navigationGroup = 'Activos físicos';
-    public static function getModelLabel(): string
-    {
-            return __('Componentes');
-    }
-    protected static ?int $navigationSort = 1;
+  protected static ?string $navigationGroup = 'Inventario Institucional';
+ 
+    protected static ?string $navigationLabel = 'Componentes';
+    protected static ?string $modelLabel = 'Componentes';
+    protected static ?string $pluralModelLabel = 'Componentes';
+    protected static ?string $recordTitleAttribute = 'name'; 
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationBadge(): ?string
     {
@@ -105,7 +106,7 @@ class ComponentResource extends Resource
                 TextColumn::make('quantity')
                     ->label('Cantidad total')
                     ->searchable()
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()." out of $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()." de $state")
                     ->sortable()
                     ->color(fn (Model $record): string => $record->totalQuantityLeft() <= 0 ? 'danger' : 'gray')
                     ->alignRight()
@@ -113,7 +114,7 @@ class ComponentResource extends Resource
                 TextColumn::make('hardware_count')
                     ->counts('hardware')
                     ->label('Cantidad total')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])." out of $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()

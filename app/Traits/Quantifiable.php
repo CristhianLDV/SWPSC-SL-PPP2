@@ -32,6 +32,6 @@ trait Quantifiable
     {
         $left = $this->totalQuantityLeft();
 
-        return "$left out of $this->quantity";
+        return "$left de $this->quantity";
     }
 }

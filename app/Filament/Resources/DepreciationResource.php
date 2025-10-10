@@ -29,9 +29,13 @@ class DepreciationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-trending-down';
 
-    protected static ?string $navigationGroup = 'Activos Intangibles';
+    protected static ?string $navigationGroup = 'Control Financiero';
+    protected static ?string $navigationLabel = 'Depreciaciones ';
+    protected static ?string $modelLabel = 'Depreciaciones ';
+    protected static ?string $pluralModelLabel = 'Depreciaciones';
+    protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?int $navigationSort = 103;
+    protected static ?int $navigationSort = 5;
 
     public static function getNavigationBadge(): ?string
     {

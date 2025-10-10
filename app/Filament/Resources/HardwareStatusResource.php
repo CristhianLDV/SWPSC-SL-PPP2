@@ -17,17 +17,17 @@ class HardwareStatusResource extends Resource
 {
     protected static ?string $model = HardwareStatus::class;
 
-    protected static bool $shouldRegisterNavigation = false;
+   /*  protected static bool $shouldRegisterNavigation = false; */
 
-    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
 
-    protected static ?string $navigationGroup = 'Models & Statuses';
-       public static function getModelLabel(): string
-    {
-        return __('Estados de hardware');
-    }
+    protected static ?string $navigationGroup = 'Configuraciones del sistema';
+    protected static ?string $navigationLabel = 'Estados de equipos';
+    protected static ?string $modelLabel = 'Estado de Equipo';
+    protected static ?string $pluralModelLabel = 'Estado de Equipos';
+    protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?int $navigationSort = 101;
+    protected static ?int $navigationSort = 34;
 
     public static function getNavigationBadge(): ?string
     {

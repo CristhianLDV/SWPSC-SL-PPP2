@@ -19,7 +19,8 @@ class ReporteInventario extends Page implements Tables\Contracts\HasTable
     use Tables\Concerns\InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationLabel = 'Centro de Reportes';
+    protected static ?string $navigationLabel = 'Reportes';
+    protected static ?string $navigationGroup = 'Reportes y Estadísticas';
     protected static ?string $title = 'Reporte de Inventario';
     protected static string $view = 'filament.pages.reporte-inventario';
 
@@ -110,10 +111,10 @@ class ReporteInventario extends Page implements Tables\Contracts\HasTable
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('info')
                     ->action(fn() => $this->exportarExcel()), */
-               Tables\Actions\Action::make('detalle')
+           /*     Tables\Actions\Action::make('detalle')
                 ->label('Ver detalle')
                 ->icon('heroicon-o-eye')
-                ->action(fn (Hardware $record) => $this->verDetalle($record)), 
+                ->action(fn (Hardware $record) => $this->verDetalle($record)),  */
                 
      
                     

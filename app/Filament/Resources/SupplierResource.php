@@ -23,12 +23,14 @@ class SupplierResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
-    protected static ?string $navigationGroup = 'Entidades Operativas';
-     public static function getModelLabel(): string
-    {
-        return __('Proveedores');
-    }
-    protected static ?int $navigationSort = 91;
+    protected static ?string $navigationGroup = 'Proveedores y Fabricante';
+    protected static ?string $navigationLabel = 'Fabricantes ';
+    protected static ?string $modelLabel = 'Fabricante';
+    protected static ?string $pluralModelLabel = 'Fabricantes ';
+    protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 17;
+
 
     public static function getNavigationBadge(): ?string
     {
@@ -60,6 +62,9 @@ class SupplierResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable(),
+                    ...CreatedAtUpdatedAtComponent::render(),
+                
+                    
             ])
             ->filters([
                 //
@@ -76,8 +81,8 @@ class SupplierResource extends Resource
                         Notification::make()
                             ->title('Proveedor actualizado exitosamente')
                             ->body('El proveedor ha sido actualizado correctamente.')
-                ->success()
-                ->send();
+                            ->success()
+                            ->send();
 
                 return $updated;
              }),

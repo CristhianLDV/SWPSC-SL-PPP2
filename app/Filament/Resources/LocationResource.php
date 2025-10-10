@@ -22,14 +22,13 @@ class LocationResource extends Resource
     protected static ?string $model = Location::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
-
-    protected static ?string $navigationGroup = 'Componentes de I.E';
-    
-    public static function getModelLabel(): string
-    {
-        return __('Ubicaciones');
-    }
-    protected static ?int $navigationSort = 82;
+    protected static ?string $navigationGroup = 'Responsables y áreas';
+    protected static ?string $navigationLabel = 'Ubicaciones ';
+    protected static ?string $modelLabel = 'Ubicaciones ';
+    protected static ?string $pluralModelLabel = 'Ubicaciones ';
+    protected static ?string $recordTitleAttribute = 'name'; 
+ 
+    protected static ?int $navigationSort = 15;
 
     public static function getNavigationBadge(): ?string
     {

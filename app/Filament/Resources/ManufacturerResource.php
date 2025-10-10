@@ -23,12 +23,14 @@ class ManufacturerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
 
-    protected static ?string $navigationGroup = 'Entidades Operativas';
-    public static function getModelLabel(): string
-    {
-        return __('Fabricantes');
-    }
-    protected static ?int $navigationSort = 90;
+    protected static ?string $navigationGroup = 'Proveedores y Fabricante';
+    protected static ?string $navigationLabel = 'Proveedores ';
+    protected static ?string $modelLabel = 'Proveedore';
+    protected static ?string $pluralModelLabel = 'Proveedores ';
+    protected static ?string $recordTitleAttribute = 'name';
+
+    
+    protected static ?int $navigationSort = 19;
 
     public static function getNavigationBadge(): ?string
     {
@@ -59,6 +61,7 @@ class ManufacturerResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable(),
+                     ...CreatedAtUpdatedAtComponent::render(),
 
             ])
             ->filters([

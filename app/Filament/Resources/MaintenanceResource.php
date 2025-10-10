@@ -28,11 +28,15 @@ class MaintenanceResource extends Resource
 
     protected static ?string $model = Maintenance::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
+    protected static ?string $navigationIcon = 'heroicon-o-wrench';
 
-    protected static ?string $navigationGroup = 'Activos Intangibles';
+    protected static ?string $navigationGroup = 'Soporte Técnico';
+    protected static ?string $navigationLabel = 'Mantenimientos ';
+    protected static ?string $modelLabel = 'Mantenimiento';
+    protected static ?string $pluralModelLabel = 'Mantenimientos ';
+    protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 25;
 
     public static function getNavigationBadge(): ?string
     {
