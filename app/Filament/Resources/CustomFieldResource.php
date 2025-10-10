@@ -54,6 +54,9 @@ class CustomFieldResource extends Resource
                                     'date' => 'Fecha',
                                 ])
                                 ->default('text')
+                                ->label('Tipo de campo')
+                      
+                                
                                 ->required(),
                             Select::make('applicable_model')
                                 ->options([
@@ -69,7 +72,10 @@ class CustomFieldResource extends Resource
                                     'App\Models\Person' => 'Persona',
                                     'App\Models\Supplier' => 'Proveedor',
                                 ])
+                                ->label('Modelo aplicable')
                                 ->required(),
+                             
+                                
                         ]),
                 ]),
             ]);

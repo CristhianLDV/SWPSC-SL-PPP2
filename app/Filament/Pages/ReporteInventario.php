@@ -86,8 +86,20 @@ class ReporteInventario extends Page implements Tables\Contracts\HasTable
                         return $query;
                     }),
             ])
+             ->actions([
+            Tables\Actions\Action::make('ver_detalle')
+                ->label('Ver Detalle')
+                ->icon('heroicon-o-eye')
+                ->color('primary')
+                ->action(function (Hardware $record) {
+                    $data = $record->load(['components', 'licences', 'maintenances', 'people']);
+                    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('reportes.detalle-hardware', compact('data'));
+                    return response()->streamDownload(fn () => print($pdf->output()), 'detalle_hardware.pdf');
+                }),        
+        ])
+
             ->headerActions([
-                Tables\Actions\Action::make('pdf')
+               /*  Tables\Actions\Action::make('pdf')
                     ->label('Exportar PDF')
                     ->icon('heroicon-o-printer')
                     ->color('success')
@@ -97,7 +109,14 @@ class ReporteInventario extends Page implements Tables\Contracts\HasTable
                     ->label('Exportar Excel')
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('info')
-                    ->action(fn() => $this->exportarExcel()),
+                    ->action(fn() => $this->exportarExcel()), */
+               Tables\Actions\Action::make('detalle')
+                ->label('Ver detalle')
+                ->icon('heroicon-o-eye')
+                ->action(fn (Hardware $record) => $this->verDetalle($record)), 
+                
+     
+                    
             ]);
     }
 

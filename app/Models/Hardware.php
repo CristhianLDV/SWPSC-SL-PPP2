@@ -92,4 +92,9 @@ class Hardware extends Model
     {
         return $this->belongsToMany(Person::class)->withTimestamps()->using(HardwarePerson::class)->withPivot('id', 'checked_in_at', 'checked_out_at');
     }
+  
+    public function maintenances()
+    {
+        return $this->hasMany(Maintenance::class);
+    }
 }
