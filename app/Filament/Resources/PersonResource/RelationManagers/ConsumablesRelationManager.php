@@ -16,6 +16,11 @@ class ConsumablesRelationManager extends RelationManager
     protected static string $relationship = 'consumables';
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+            return 'Consumibles'; // Traducción del título de la pestaña
+    }
+
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
     {
         return $ownerRecord->consumables()->count();

@@ -38,9 +38,9 @@ class HardwareResource extends Resource
 
     protected static ?string $navigationGroup = 'Inventario Institucional';
  
-    protected static ?string $navigationLabel = 'Equipos';
-    protected static ?string $modelLabel = 'Equipo';
-    protected static ?string $pluralModelLabel = 'Equipos';
+    protected static ?string $navigationLabel = 'Equipos informáticos';
+    protected static ?string $modelLabel = 'Equipo ';
+    protected static ?string $pluralModelLabel = 'Equipos informáticos';
     protected static ?string $recordTitleAttribute = 'name'; 
 
     
@@ -66,7 +66,7 @@ class HardwareResource extends Resource
         return [
             'Serial No.' => $record->serial_number,
             'Estado' => $record->hardware_status?->name,
-            'Departamento' => $record->department?->name ?? 'Desconocido',
+            'Área' => $record->department?->name ?? 'Desconocido',
         ];
     }
 
@@ -79,23 +79,23 @@ class HardwareResource extends Resource
                         ->description('Proporcionar detalles para facilitar un seguimiento preciso y efectivo')
                         ->schema([   
                             TextInput::make('name')
-                                ->label('Nombre del hardware')
+                                ->label('Nombre')
                                 ->required()
                                 ->maxLength(255)
                                 ->columnSpan(2),
                             BelongsToSelect::make('hardware_model_id')
                                 ->relationship('hardware_model', 'name')
-                                ->label('Modelo de hardware')
+                                ->label('Modelo')
                                 ->searchable()
                                 ->createOptionForm([
                                     TextInput::make('name')
-                                        ->label('Nombre del modelo')
+                                        ->label('Nombre')
                                         ->required()
                                         ->maxLength(255),
                                 ])
                                 ->editOptionForm([
                                     TextInput::make('name')
-                                        ->label('Nombre del modelo')
+                                        ->label('Nombre')
                                         ->required()
                                         ->maxLength(255),
                                 ])
@@ -105,7 +105,7 @@ class HardwareResource extends Resource
                       
                             BelongsToSelect::make('hardware_status_id')
                                 ->relationship('hardware_status', 'name')
-                                ->label('Estado del hardware')
+                                ->label('Estado')
                                 ->columnSpan(2)
                                 ->createOptionForm([
                                     TextInput::make('name')
@@ -123,7 +123,7 @@ class HardwareResource extends Resource
                                 ->preload()
                                 ->required(),
                             TextInput::make('serial_number')
-                                ->label('Serial No.')
+                                ->label('Número de Serie')
                                 ->columnSpan(2),
                         ])
                         ->collapsible()
@@ -186,25 +186,25 @@ class HardwareResource extends Resource
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable()
-                    ->label('Nombre del hardware')
+                    ->label('Nombre')
                     ->wrap(),
                 TextColumn::make('hardware_model.name')
                     ->sortable()
                     ->searchable()
-                    ->label('Modelo de hardware')
+                    ->label('Modelo')
                     ->iconPosition('after'),
                 TextColumn::make('hardware_status.name')
                     ->badge()
                     ->sortable()
                     ->searchable()
                     ->color('success')
-                    ->label('Estado del hardware')
+                    ->label('Estado')
                     ->iconPosition('after'),
                 TextColumn::make('serial_number')
                     ->sortable()
                     ->alignRight()
                     ->searchable()
-                    ->label('Serial No.')
+                    ->label('Número de serie')
                     ->badge(),
                 TextColumn::make('people_count')
                     ->counts('people')
@@ -212,21 +212,21 @@ class HardwareResource extends Resource
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
-                    ->label('Personas'),
+                    ->label('Responsable'),
                 TextColumn::make('components_count')
                     ->counts('components')
                     ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['components'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
-                    ->label('Componentes'),
+                    ->label('Componente'),
                 TextColumn::make('licences_count')
                     ->counts('licences')
                     ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['licences'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
-                    ->label('Licencias'),
+                    ->label('Licencia'),
             ])
             ->filters([
                 //
@@ -243,8 +243,8 @@ class HardwareResource extends Resource
                     ->color('danger')
                     ->successNotification(
                         Notification::make()
-                            ->title('Hardware eliminado exitosamente')
-                            ->body('El hardware ha sido eliminado correctamente.')
+                            ->title('Equipo informático eliminado exitosamente')
+                            ->body('El equipo informático  ha sido eliminado correctamente.')
                             ->success()
                     ),
 

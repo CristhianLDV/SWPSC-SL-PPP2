@@ -25,7 +25,7 @@ class EditHardwareStatus extends EditRecord
     {
         Notification::make()
             ->title('Estado actualizado exitosamente')
-            ->body('El estado de hardware ha sido actualizado correctamente.')
+            ->body('El estado de equipo informatico ha sido actualizado correctamente.')
             ->success()
             ->send();
     }
@@ -38,7 +38,7 @@ class EditHardwareStatus extends EditRecord
                 ->successNotification(
                     Notification::make()
                         ->title('Estado eliminado exitosamente')
-                        ->body('El estado de hardware ha sido eliminado correctamente.')
+                        ->body('El estado de equipo informatico ha sido eliminado correctamente.')
                         ->success()
 
                 ),

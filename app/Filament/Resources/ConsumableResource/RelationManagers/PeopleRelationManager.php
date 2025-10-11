@@ -12,7 +12,10 @@ class PeopleRelationManager extends RelationManager
 {
     protected static string $relationship = 'people';
     protected static ?string $recordTitleAttribute = 'name';
-
+      public static function getTitle(Model $ownerRecord, string $pageClass): string
+            {
+                return 'Responsables'; // Traducción del título de la pestaña
+            }
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
     {
         return $ownerRecord->people()->count();
@@ -26,6 +29,7 @@ class PeopleRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name')
                     ->badge()
                     ->searchable()
+                    ->label('Nombre')
                     ->url(fn (Person $record) => "/admin/people/{$record->person_id}/edit")
                     ->getStateUsing(fn (Person $record): string => $record->name)
                     ->iconPosition('after')
@@ -47,7 +51,7 @@ class PeopleRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                    ->label('Adjuntar persona'),
+                    ->label('Asignar responsable'),
             ]);
     }
 }

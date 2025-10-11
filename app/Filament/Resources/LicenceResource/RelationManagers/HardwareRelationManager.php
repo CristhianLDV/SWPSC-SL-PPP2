@@ -13,10 +13,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class HardwareRelationManager extends RelationManager
 {
-    protected static string $relationship = 'hardware';
+    protected static string $relationship = 'Hardware';
     protected bool $allowsDuplicates = true;
     protected static ?string $recordTitleAttribute = 'name';
-
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+            {
+                return 'Equipos'; // Traducción del título de la pestaña
+            }
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
     {
         return $ownerRecord->hardware()->count();
@@ -26,7 +29,7 @@ class HardwareRelationManager extends RelationManager
     {
         return $form->schema([
             Forms\Components\TextInput::make('name')
-                ->label('Nombre del hardware')
+                ->label('Nombre')
                 ->required()
                 ->maxLength(255),
         ]);
@@ -38,7 +41,7 @@ class HardwareRelationManager extends RelationManager
             ->allowDuplicates()
             ->columns([
                 TextColumn::make('hardware_model.name')
-                    ->label('Modelo de hardware')
+                    ->label('Modelo')
                     ->badge()
                     ->url(fn (Hardware $record) => "/admin/hardware/{$record->hardware_id}/edit")
                     ->iconPosition('after')
@@ -74,7 +77,7 @@ class HardwareRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
                     ->disabled(false)
-                    ->label('Vincular hardware'),
+                    ->label('Vincular Equipo'),
             ])
             ->actions([
                 Tables\Actions\Action::make('check_in')

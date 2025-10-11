@@ -9,7 +9,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class HardwareCheckouts extends BaseWidget
 {
-    protected static ?string $heading = 'Salidas de Hardware';
+    protected static ?string $heading = 'Salidas de Equipos';
 
     protected static ?int $sort = 3;
 
@@ -32,6 +32,7 @@ class HardwareCheckouts extends BaseWidget
                     ->url(fn (HardwarePerson $record) => "/admin/hardware/{$record->hardware->id}/edit")
                     ->getStateUsing(fn (HardwarePerson $record): string => $record->hardware->hardware_model->name)
                     ->iconPosition('after')
+                    ->label('Equipo')
                     ->icon('heroicon-o-arrow-right'),
                 TextColumn::make('person.name')
                     ->label('Responsable'),

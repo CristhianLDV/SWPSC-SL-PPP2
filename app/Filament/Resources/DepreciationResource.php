@@ -61,7 +61,7 @@ class DepreciationResource extends Resource
                             BelongsToSelect::make('hardware_id')
                                 ->relationship('hardware', 'name')
                                 ->searchable()
-                                ->label('Hardware')
+                                ->label('Equipo ')
                                 ->preload()
                                 ->required(),
                             Select::make('method')
@@ -110,7 +110,7 @@ class DepreciationResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hardware.hardware_model.name')
-                    ->label('Hardware')
+                    ->label('Equipo')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('purchase_date')

@@ -60,10 +60,10 @@ class CustomFieldResource extends Resource
                                 ->required(),
                             Select::make('applicable_model')
                                 ->options([
-                                    'App\Models\Hardware' => 'Hardware',
+                                    'App\Models\Hardware' => 'Equipo informático',
                                     'App\Models\Component' => 'Componente',
                                     'App\Models\Consumable' => 'Consumible',
-                                    'App\Models\Department' => 'Departamento',
+                                    'App\Models\Department' => 'Área',
                                     'App\Models\Depreciation' => 'Depreciación',
                                     'App\Models\Licence' => 'Licencia',
                                     'App\Models\Location' => 'Ubicación',

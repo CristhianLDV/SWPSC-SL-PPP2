@@ -19,7 +19,7 @@
         <tr><th>Nombre</th><td>{{ $data->name }}</td></tr>
         <tr><th>Modelo</th><td>{{ $data->hardware_model->name ?? 'N/A' }}</td></tr>
         <tr><th>Estado</th><td>{{ $data->hardware_status->name ?? 'N/A' }}</td></tr>
-        <tr><th>Departamento</th><td>{{ $data->department->name ?? 'N/A' }}</td></tr>
+        <tr><th>Área</th><td>{{ $data->department->name ?? 'N/A' }}</td></tr>
         <tr><th>Ubicación</th><td>{{ $data->location->name ?? 'N/A' }}</td></tr>
         <tr><th>Proveedor</th><td>{{ $data->supplier->name ?? 'N/A' }}</td></tr>
         <tr><th>Fecha de compra</th><td>{{ $data->purchase_date }}</td></tr>

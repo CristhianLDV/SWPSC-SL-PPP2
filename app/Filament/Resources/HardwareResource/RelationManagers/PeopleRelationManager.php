@@ -18,7 +18,7 @@ class PeopleRelationManager extends RelationManager
     protected static ?string $recordTitleAttribute = 'name';
     public static function getTitle(Model $ownerRecord, string $pageClass): string
         {
-            return 'Beneficiarios'; // Traducción del título de la pestaña
+            return 'Responsables'; // Traducción del título de la pestaña
         }
 
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
@@ -47,7 +47,7 @@ class PeopleRelationManager extends RelationManager
                     ->url(fn (Person $record) => "/admin/people/{$record->person_id}/edit")
                     ->getStateUsing(fn (Person $record): string => $record->name)
                     ->iconPosition('after')
-                    ->label('Beneficiario')
+                    ->label('Responsable')
                     ->icon('heroicon-o-arrow-right'),
 
                 Tables\Columns\TextColumn::make('phone')
@@ -76,7 +76,7 @@ class PeopleRelationManager extends RelationManager
                             ->whereNull('checked_in_at')
                             ->exists();
                     })
-                    ->label('Asignar beneficiario'),
+                    ->label('Asignar Responsable'),
             ])
             ->actions([
                 Tables\Actions\Action::make('check_in')

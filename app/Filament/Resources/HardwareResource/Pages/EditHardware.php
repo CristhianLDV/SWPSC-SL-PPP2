@@ -38,8 +38,8 @@ class EditHardware extends EditRecord
     protected function afterSave()
     {
         Notification::make()
-            ->title('Hardware actualizado exitosamente')
-            ->body('El hardware ha sido actualizado correctamente.')
+            ->title('Equipo informatico actualizado exitosamente')
+            ->body('El equipo informatico ha sido actualizado correctamente.')
             ->success()
             ->send();
     }
@@ -51,8 +51,8 @@ class EditHardware extends EditRecord
             Actions\DeleteAction::make()
                 ->successNotification(
                     Notification::make()
-                        ->title('Hardware eliminado exitosamente')
-                        ->body('El hardware ha sido eliminado correctamente.')
+                        ->title('Equipo informatico eliminado exitosamente')
+                        ->body('El Equipo informatico ha sido eliminado correctamente.')
                         ->success()
 
                 ),

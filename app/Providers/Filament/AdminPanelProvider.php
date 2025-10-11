@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->darkMode(true)
+            ->darkMode(false)
             ->plugins([
                 
                 FilamentShieldPlugin::make(),

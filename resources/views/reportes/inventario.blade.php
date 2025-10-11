@@ -16,7 +16,7 @@
   <table>
     <thead>
       <tr>
-        <th>Equipo</th><th>Estado</th><th>Departamento</th><th>Ubicación</th>
+        <th>Equipo</th><th>Estado</th><th>Área</th><th>Ubicación</th>
         <th>Proveedor</th><th>Modelo</th><th>Fecha compra</th><th>Costo</th>
       </tr>
     </thead>

@@ -127,14 +127,14 @@ class LicenceResource extends Resource
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
-                    ->label('Personas'),
+                    ->label('Responsable'),
                 TextColumn::make('hardware_count')
                     ->counts('hardware')
                     ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
-                    ->label('Hardware'),
+                    ->label('Equipo'),
 
             ])
             ->filters([

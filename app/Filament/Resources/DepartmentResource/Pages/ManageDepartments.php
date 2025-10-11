@@ -18,7 +18,7 @@ class ManageDepartments extends ManageRecords
     {
         return [
         Actions\CreateAction::make()
-            ->label('Registrar departamento')
+            ->label('Registrar áreas')
             ->color('success')
             ->icon('heroicon-o-plus-circle')
                  // ✅ Oculta el botón "Crear y crear otro"
@@ -28,8 +28,8 @@ class ManageDepartments extends ManageRecords
                 $record = $this->handleRecordCreation($data);
 
                 Notification::make()
-                    ->title('Departamento creado exitosamente')
-                    ->body('El departamento ha sido registrado correctamente.')
+                    ->title('área creada exitosamente')
+                    ->body('El área ha sido registrado correctamente.')
                     ->success()
                     ->send();
 

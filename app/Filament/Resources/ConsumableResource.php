@@ -118,8 +118,12 @@ class ConsumableResource extends Resource
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
-                    ->label('Personas'),
-                TextColumn::make('department.name')->searchable()->sortable()->alignRight(),
+                    ->label('Responsable'),
+                TextColumn::make('department.name')
+                ->searchable()
+                ->sortable()
+                ->label('Área')
+                ->alignRight(),
             ])
             ->filters([
                 //

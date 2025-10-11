@@ -21,7 +21,7 @@ class HardwareCheckinsCheckouts extends ApexChartWidget
     /**
      * Widget Title
      */
-    protected static ?string $heading = 'Entradas y Salidas de Hardware';
+    protected static ?string $heading = 'Entradas y Salidas de Equipos Informáticos';
 
     protected function rangeAreaData($checkoutField)
     {

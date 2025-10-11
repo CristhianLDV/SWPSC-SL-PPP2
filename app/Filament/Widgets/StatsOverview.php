@@ -20,11 +20,11 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Hardware', Hardware::count()),
+            Stat::make('Equipos informaticos', Hardware::count()),
             Stat::make('Licencias', Licence::count()),
             Stat::make('Consumibles', Consumable::count()),
             Stat::make('Componentes', Component::count()),
-            Stat::make('Personas', Person::count()),
+            Stat::make('Responsables', Person::count()),
             Stat::make('Mantenimientos', Maintenance::count()),
         ];
     }

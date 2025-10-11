@@ -15,7 +15,10 @@ class HardwareRelationManager extends RelationManager
 {
     protected static string $relationship = 'hardware';
     protected static ?string $recordTitleAttribute = 'name';
-
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return 'Equipos'; // Traducción del título de la pestaña
+    }
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
     {
         return $ownerRecord->hardware()->count();
@@ -72,7 +75,7 @@ class HardwareRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                    ->label('Vincular hardware'),
+                    ->label('Vincular Equipo'),
             ])
             ->actions([
                 Tables\Actions\Action::make('check_in')

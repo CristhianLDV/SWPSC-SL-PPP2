@@ -22,7 +22,7 @@ class CreateHardwareStatus extends CreateRecord
     {
         Notification::make()
             ->title('Estado creado exitosamente')
-            ->body('El estado de hardware ha sido creado correctamente.')
+            ->body('El estado de equipo informatico ha sido creado correctamente.')
             ->success()
             ->send();   
     }

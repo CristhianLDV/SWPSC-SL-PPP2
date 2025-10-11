@@ -69,8 +69,8 @@ class HardwareModelResource extends Resource
                     ->color('danger')
                     ->successNotification(
                         Notification::make()
-                            ->title('Modelo de hardware eliminado exitosamente')
-                            ->body('El modelo de hardware ha sido eliminado correctamente.')
+                            ->title('Modelo eliminado exitosamente')
+                            ->body('El modelo de equipo informático  ha sido eliminado correctamente.')
                             ->success()
                     ),
 

@@ -71,7 +71,7 @@ class HardwareStatusResource extends Resource
                     ->successNotification(
                         Notification::make()
                             ->title('Estado eliminado exitosamente')
-                            ->body('El estado de hardware ha sido eliminado correctamente.')
+                            ->body('El estado de equipo informático  ha sido eliminado correctamente.')
                             ->success()
                     ),
             ])

@@ -21,7 +21,7 @@ class CreateDefaultTenantCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Inicializa el sistema creando el usuario administrador y los estados de hardware por defecto.';
+    protected $description = 'Inicializa el sistema creando el usuario administrador y los estados de los equipos informáticos por defecto.';
 
     /**
      * Execute the console command.
@@ -56,7 +56,7 @@ class CreateDefaultTenantCommand extends Command
             HardwareStatus::firstOrCreate(['name' => $name]);
         }
 
-        $this->info('Estados de hardware inicializados correctamente.');
+        $this->info('Estados de equipos informáticos inicializados correctamente.');
         $this->info('✅ Sistema configurado con éxito.');
     }
 }

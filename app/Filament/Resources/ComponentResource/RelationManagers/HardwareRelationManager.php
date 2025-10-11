@@ -13,7 +13,10 @@ class HardwareRelationManager extends RelationManager
 {
     protected static string $relationship = 'hardware';
     protected static ?string $recordTitleAttribute = 'name';
-
+     public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return 'Equipos'; // Traducción del título de la pestaña
+    }
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
     {
         return $ownerRecord->hardware()->count();
@@ -27,6 +30,7 @@ class HardwareRelationManager extends RelationManager
                 TextColumn::make('hardware_model.name')
                     ->badge()
                     ->url(fn (Hardware $record) => "/admin/hardware/{$record->hardware_id}/edit")
+                    ->label('Modelo')
                     ->iconPosition('after')
                     ->searchable()
                     ->icon('heroicon-o-arrow-right'),
@@ -34,34 +38,36 @@ class HardwareRelationManager extends RelationManager
                 TextColumn::make('hardware_status.name')
                     ->sortable()
                     ->badge()
+                    ->label('Estado')
                     ->color('success')
                     ->searchable()
                     ->iconPosition('after'),
 
                 TextColumn::make('serial_number')
                     ->sortable()
+                    ->label('Numero de Serie')
                     ->alignRight()
                     ->searchable()
                     ->badge()
                     ->color('info'),
 
                 TextColumn::make('checked_out_at')
-                    ->label('Checked out at')
+                    ->label('Asignado el')
                     ->alignRight(),
 
                 TextColumn::make('checked_in_at')
-                    ->label('Checked in at')
+                    ->label('Devuelto el')
                     ->alignRight(),
             ])
             ->filters([])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                    ->label('Attach a Hardware'),
+                    ->label('Vincular Equipo'),
             ])
             ->actions([
                 Tables\Actions\Action::make('check_in')
-                    ->label('Detach')
+                    ->label('Desvincular')
                     ->action(function (Hardware $record) {
                         $record->pivot->find($record->pivot_id)->touch('checked_in_at');
                     })

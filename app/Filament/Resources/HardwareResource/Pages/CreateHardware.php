@@ -25,8 +25,8 @@ class CreateHardware extends CreateRecord
     protected function afterCreate()
     {
         Notification::make()
-            ->title('Hardware creado exitosamente')
-            ->body('El hardware ha sido creado correctamente.')
+            ->title('Equipo informatico creado exitosamente')
+            ->body('El equipo informatico ha sido creado correctamente.')
             ->success()
             ->send();   
     }

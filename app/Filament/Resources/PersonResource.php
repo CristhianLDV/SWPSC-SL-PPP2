@@ -31,7 +31,7 @@ class PersonResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationGroup = 'Responsables y áreas';
     protected static ?string $navigationLabel = 'Responsables';
-    protected static ?string $modelLabel = 'Responsables';
+    protected static ?string $modelLabel = 'Responsable';
     protected static ?string $pluralModelLabel = 'Responsables';
     protected static ?string $recordTitleAttribute = 'name'; 
 
@@ -75,7 +75,7 @@ class PersonResource extends Resource
                         ->columnSpan(3)
                         ->schema([
                             TextInput::make('name')->required()
-                                ->label('Nombre completo')
+                                ->label('Nombre')
                                 ->placeholder('Ingrese el nombre completo'),
                             TextInput::make('phone')
                                 ->label('Teléfono')
@@ -100,7 +100,7 @@ class PersonResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->sortable()->searchable(),
-                TextColumn::make('name')->sortable()->label('Nombre completo')->searchable(),
+                TextColumn::make('name')->sortable()->label('Nombre')->searchable(),
                 TextColumn::make('phone')->sortable()->label('Teléfono')->searchable(),
                 TextColumn::make('hardware_count')
                     ->counts('hardware')
@@ -108,21 +108,21 @@ class PersonResource extends Resource
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
-                    ->label('Hardware'),
+                    ->label('Equipo'),
                 TextColumn::make('consumables_count')
                     ->counts('consumables')
                     ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['consumables'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
-                    ->label('Consumibles'),
+                    ->label('Consumible'),
                 TextColumn::make('licences_count')
                     ->counts('licences')
                     ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['licences'])." de $state")
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
-                    ->label('Licencias'),
+                    ->label('Licencia'),
             ])
             ->filters([
                 //

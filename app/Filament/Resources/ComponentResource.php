@@ -56,9 +56,9 @@ class ComponentResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Vumero Modelo' => $record->model_number,
+            'Numero Modelo' => $record->model_number,
             'Cantidad' => $record->quantity,
-            'Departamento' => $record->department?->name ?? 'Unknown',
+            'Área' => $record->department?->name ?? 'Unknown',
         ];
     }
 
@@ -118,11 +118,11 @@ class ComponentResource extends Resource
                     ->sortable()
                     ->color('gray')
                     ->alignRight()
-                    ->label('Hardware'),
+                    ->label('Equipo'),
                 TextColumn::make('department.name')
                     ->searchable()
                     ->sortable()
-                    ->label('Departamento')
+                    ->label('Área')
                     ->alignRight(),
             ])
             ->filters([

@@ -21,8 +21,8 @@ class CreateHardwareModel extends CreateRecord
     protected function afterCreate()
     {
         Notification::make()
-            ->title('Modelo de hardware creado exitosamente')
-            ->body('El modelo de hardware ha sido creado correctamente.')
+            ->title('Modelo creado exitosamente')
+            ->body('El modelo de equipo informatico ha sido creado correctamente.')
             ->success()
             ->send();   
     }

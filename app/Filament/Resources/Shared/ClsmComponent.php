@@ -13,7 +13,7 @@ class ClsmComponent
         $schema = [
             BelongsToSelect::make('department_id')
                 ->relationship('department', 'name')
-                ->label('Departamento')
+                ->label('Área')
                 ->createOptionForm([
                     TextInput::make('name')
                         ->label('Nombre')

@@ -16,7 +16,10 @@ class PeopleRelationManager extends RelationManager
     protected static string $relationship = 'people';
     protected bool $allowsDuplicates = true;
     protected static ?string $recordTitleAttribute = 'name';
-
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+            {
+                return 'Responsables'; // Traducción del título de la pestaña
+            }
     public static function getBadge(Model $ownerRecord, string $pageClass): ?string
     {
         return $ownerRecord->people()->count();
@@ -72,7 +75,7 @@ class PeopleRelationManager extends RelationManager
                             ->whereNull('checked_in_at')
                             ->exists();
                     })
-                    ->label('Vincular persona'),
+                    ->label('Vincular responsable'),
             ])
             ->actions([
                 Tables\Actions\Action::make('check_in')

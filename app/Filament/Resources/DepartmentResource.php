@@ -67,13 +67,13 @@ class DepartmentResource extends Resource
                 ->button()
                 ->color('success')
                 ->icon('heroicon-o-pencil-square')
-                ->modalHeading('Editar departamento')
+                ->modalHeading('Editar Áreas')
                 ->using(function (Model $record, array $data) {
                 $updated = static::handleRecordUpdateStatic($record, $data);
 
                 Notification::make()
-                ->title('Departamento actualizado exitosamente')
-                ->body('El departamento ha sido actualizado correctamente.')
+                ->title('Área actualizado exitosamente')
+                ->body('El área ha sido actualizado correctamente.')
                 ->success()
                 ->send();
 
@@ -86,8 +86,8 @@ class DepartmentResource extends Resource
                 ->icon('heroicon-o-trash')
                 ->successNotification(
                     Notification::make()
-                        ->title('Departamento eliminado exitosamente')
-                        ->body('El departamento ha sido eliminado correctamente.')
+                        ->title('Área eliminado exitosamente')
+                        ->body('El área ha sido eliminado correctamente.')
                         ->success()
                         ),
                     ])
@@ -98,8 +98,8 @@ class DepartmentResource extends Resource
                     ->color('danger')
                     ->successNotification(
                         Notification::make()
-                            ->title('Departamentos eliminados exitosamente')
-                            ->body('Los departamentos seleccionados fueron eliminados correctamente.')
+                            ->title('Áreas eliminadas exitosamente')
+                            ->body('Las áreas seleccionados fueron eliminados correctamente.')
                             ->success()
                     ),
                 ]),

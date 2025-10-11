@@ -95,11 +95,11 @@ class MaintenanceResource extends Resource
                 ->searchable(),
                 TextColumn::make('hardware.hardware_model.name')
                 ->sortable()
-                ->label('Modelo de hardware')
+                ->label('Modelo')
                 ->searchable(),
                 TextColumn::make('maintenance_type')
                 ->sortable()
-                ->label('Tipo de mantenimiento')
+                ->label('Tipo')
                 ->searchable()
                 ->badge(),
                 TextColumn::make('performed_by')

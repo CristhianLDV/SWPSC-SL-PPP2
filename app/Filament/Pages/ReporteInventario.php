@@ -43,7 +43,7 @@ class ReporteInventario extends Page implements Tables\Contracts\HasTable
             ->columns([
                 TextColumn::make('name')->label('Equipo')->searchable()->sortable(),
                 TextColumn::make('hardware_status.name')->label('Estado')->badge(),
-                TextColumn::make('department.name')->label('Departamento'),
+                TextColumn::make('department.name')->label('Área'),
                 TextColumn::make('location.name')->label('Ubicación'),
                 TextColumn::make('supplier.name')->label('Proveedor'),
                 TextColumn::make('hardware_model.name')->label('Modelo'),
@@ -56,7 +56,7 @@ class ReporteInventario extends Page implements Tables\Contracts\HasTable
                     ->relationship('hardware_status', 'name'),
 
                 SelectFilter::make('department_id')
-                    ->label('Departamento')
+                    ->label('Área')
                     ->relationship('department', 'name'),
 
                 SelectFilter::make('supplier_id')
