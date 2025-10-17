@@ -25,6 +25,7 @@ class CustomFieldResource extends Resource
     {
         return static::getModel()::count();
     }
+     protected static bool $shouldRegisterNavigation = false;
        public static function getModelLabel(): string
     {
         return __('Campos personalizados');

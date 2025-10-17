@@ -18,9 +18,9 @@ class Alert extends Model
             if ($consumable->totalQuantityLeft() <= $consumable->threshold) {
                 $records[] = [
                     'record_id' => $consumable->id,
-                    'record' => 'Consumable',
+                    'record' => 'Consumible',
                     'record_name' => $consumable->name,
-                    'record_url' => 'consumables',
+                    'record_url' => 'consumibles',
                     'threshold' => 'Menor o igual a '.$consumable->threshold,
                     'quantity_left' => $consumable->totalQuantityLeft(),
                     'quantity' => $consumable->quantity,
@@ -33,9 +33,9 @@ class Alert extends Model
             if ($licence->totalQuantityLeft() <= $licence->threshold) {
                 $records[] = [
                     'record_id' => $licence->id,
-                    'record' => 'Licence',
+                    'record' => 'Licencia',
                     'record_name' => $licence->name,
-                    'record_url' => 'licences',
+                    'record_url' => 'licencias',
                     'threshold' => 'Menor o igual a '.$licence->threshold,
                     'quantity_left' => $licence->totalQuantityLeft(),
                     'quantity' => $licence->quantity,
@@ -48,9 +48,9 @@ class Alert extends Model
             if ($component->totalQuantityLeft() <= $component->threshold) {
                 $records[] = [
                     'record_id' => $component->id,
-                    'record' => 'Component',
+                    'record' => 'Componente',
                     'record_name' => $component->name,
-                    'record_url' => 'components',
+                    'record_url' => 'componentes',
                     'threshold' => 'Menor o igual a '.$component->threshold,
                     'quantity_left' => $component->totalQuantityLeft(),
                     'quantity' => $component->quantity,

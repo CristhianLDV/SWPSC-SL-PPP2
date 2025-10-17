@@ -16,9 +16,9 @@ use Filament\Tables\Table;
 class HardwareModelResource extends Resource
 {
     protected static ?string $model = HardwareModel::class;
-/* 
+
     protected static bool $shouldRegisterNavigation = false;
- */
+
     protected static ?string $navigationIcon = 'heroicon-o-cpu-chip';
 
     protected static ?string $navigationGroup = 'Configuraciones del sistema';

@@ -23,7 +23,7 @@ class ReporteInventario extends Page implements Tables\Contracts\HasTable
     protected static ?string $navigationGroup = 'Reportes y Estadísticas';
     protected static ?string $title = 'Reporte de Inventario';
     protected static string $view = 'filament.pages.reporte-inventario';
-
+    protected static ?int $navigationSort = 35;
     // Variables para filtros activos
     public ?int $f_status = null;
     public ?int $f_department = null;

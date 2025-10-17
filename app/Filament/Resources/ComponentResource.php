@@ -66,8 +66,8 @@ class ComponentResource extends Resource
     {
         return $form
             ->schema([
-                NcqComponent::render(),
-                self::customFieldsSchema(self::getModel()),
+              /*   NcqComponent::render(), */
+                /* self::customFieldsSchema(self::getModel()), */
                 ClsmComponent::render(),
 
                 Section::make('Fecha de compra y costo')

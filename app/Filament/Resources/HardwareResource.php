@@ -129,15 +129,15 @@ class HardwareResource extends Resource
                         ->collapsible()
                         ->compact()
                         ->columns(6)
-                        ->columnSpan(3),
-                    Section::make('Código QR')
+                        ->columnSpan(4),
+           /*          Section::make('Código QR')
                         ->columnSpan(1)
                         ->collapsible()
                         ->compact()
-                        ->schema([ViewField::make('qr_code')->view('filament.components.qr_code')]),
-                ])->columns(4),
+                        ->schema([ViewField::make('qr_code')->view('filament.components.qr_code')]), */
+                ])->columns(2),
 
-                self::customFieldsSchema(self::getModel()),
+                /* self::customFieldsSchema(self::getModel()), */
 
                 ClsmComponent::render(false),
 

@@ -65,9 +65,9 @@ class LicenceResource extends Resource
     {
         return $form
             ->schema([
-                NcqComponent::render(),
+             /*    NcqComponent::render(),
                 self::customFieldsSchema(self::getModel()),
-                ClsmComponent::render(),
+                ClsmComponent::render(), */
 
                 Section::make('Registro de licencia')
                     ->description('Por favor complete el siguiente formulario')

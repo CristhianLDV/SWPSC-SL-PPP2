@@ -24,6 +24,8 @@ use Filament\Notifications\Notification;
 class DepreciationResource extends Resource
 {
     use HasCustomFields;
+    
+    protected static bool $shouldRegisterNavigation = false;
 
     protected static ?string $model = Depreciation::class;
 
