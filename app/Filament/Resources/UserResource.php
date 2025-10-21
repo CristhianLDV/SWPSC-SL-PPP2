@@ -50,7 +50,14 @@ class UserResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->label('Nombre')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                     ->dehydrateStateUsing(fn ($state) => trim($state)) // 🔹 elimina espacios antes y 
+                       ->rule('regex:/^(?!\s*$)[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/u') // 🔹 no permite solo espacios, ni caracteres especiales
+                    ->validationMessages([
+                        'required' => 'El nombre es obligatorio.',
+                        'regex' => 'El nombre solo puede contener letras y espacios (sin números ni símbolos).',
+                        'max' => 'El nombre no puede tener más de :max caracteres.',
+                    ]),
                 TextInput::make('email')
                     ->email()
                     ->label('Correo electrónico')
@@ -60,9 +67,20 @@ class UserResource extends Resource
                 TextInput::make('password')
                     ->label('Contraseña')
                     ->password()
-                      ->dehydrateStateUsing(fn ($state) => bcrypt($state))
+                    ->required(fn (string $context) => $context === 'create')
+                    ->dehydrateStateUsing(fn ($state) => bcrypt(trim($state))) // 🔹 limpia antes de encriptar
+                    ->minLength(8) // 🔹 mínimo 8 caracteres
+                    ->maxLength(255)
+                    ->rule('regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/') // 🔹 al menos una mayúscula, una minúscula y un número
+                    ->validationMessages([
+                        'min' => 'La contraseña debe tener al menos :min caracteres.',
+                        'regex' => 'La contraseña debe contener al menos una letra mayúscula, una minúscula y un número.',
+                        'required' => 'El campo contraseña es obligatorio.',
+                    ])
+                ->dehydrateStateUsing(fn ($state) => bcrypt($state))
                 ->required(fn (string $context) => $context === 'create'),
                  Select::make('roles')
+                    ->required()
                     ->label('Rol')
                     ->relationship('roles', 'name') // Usa la relación de Spatie Permission
                     ->options(Role::pluck('name', 'id')) // Lista de roles disponibles
