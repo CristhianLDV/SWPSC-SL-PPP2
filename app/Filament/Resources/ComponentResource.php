@@ -66,7 +66,7 @@ class ComponentResource extends Resource
     {
         return $form
             ->schema([
-              /*   NcqComponent::render(), */
+                 NcqComponent::render(), 
                 /* self::customFieldsSchema(self::getModel()), */
                 ClsmComponent::render(),
 
@@ -76,7 +76,10 @@ class ComponentResource extends Resource
                     ->compact()
                     ->columns(4)
                     ->schema([
-                        DatePicker::make('purchase_date'),
+                        DatePicker::make('purchase_date')
+                            ->label('Fecha de compra')
+                            ->placeholder('Selecciona una fecha'),
+                            
                         TextInput::make('purchase_cost')
                             ->label('Costo de compra')
                             ->numeric()

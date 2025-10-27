@@ -33,12 +33,8 @@ class NcqComponent
                         ->required()
                         ->integer(),
                 ])
-                ->columnSpan(3),
-            Section::make('Código QR')
-                ->columnSpan(1)
-                ->collapsible()
-                ->compact()
-                ->schema([ViewField::make('qr_code')->view('filament.components.qr_code')]),
-        ])->columns(4);
+                ->columnSpan(4),
+           
+        ])->columns();
     }
 }

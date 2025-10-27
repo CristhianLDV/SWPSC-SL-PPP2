@@ -67,7 +67,7 @@ class ConsumableResource extends Resource
     {
         return $form
             ->schema([
-                // NcqComponent::render(),
+                 NcqComponent::render(),
            /*      self::customFieldsSchema(self::getModel()), */
                 ClsmComponent::render(),
 

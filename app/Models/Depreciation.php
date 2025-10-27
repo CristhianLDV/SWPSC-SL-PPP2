@@ -80,7 +80,7 @@ class Depreciation extends Model
         $toDate = $toDate ? Carbon::parse($toDate) : now();
         $monthsPassed = $this->purchase_date->diffInMonths($toDate);
 
-        // Ensure that we don't calculate for a period before the purchase date
+        // Ensure that we don't calculate for a period before the 
         if ($monthsPassed < 0) {
             return 0;
         }
