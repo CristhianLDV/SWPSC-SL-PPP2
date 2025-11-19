@@ -20,6 +20,7 @@ use Filament\Tables;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\ViewField;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -75,14 +76,15 @@ class HardwareResource extends Resource
         return $form
             ->schema([
                 Grid::make()->schema([
-                    Section::make('informacion basica')
+                    Section::make('Información básica')
                         ->description('Proporcionar detalles para facilitar un seguimiento preciso y efectivo')
                         ->schema([   
                             TextInput::make('name')
                                 ->label('Nombre')
                                 ->required()
+                                ->unique()
                                 ->maxLength(255)
-                                ->columnSpan(2),
+                                ->columnSpan(['default' => 2, 'sm' => 2, 'md' => 2]),
                             BelongsToSelect::make('hardware_model_id')
                                 ->relationship('hardware_model', 'name')
                                 ->label('Modelo')
@@ -100,13 +102,13 @@ class HardwareResource extends Resource
                                         ->maxLength(255),
                                 ])
                                 ->preload()
-                                ->columnSpan(2)
+                                ->columnSpan(['default' => 2, 'sm' => 2, 'md' => 2])
                                 ->required(),
                       
                             BelongsToSelect::make('hardware_status_id')
                                 ->relationship('hardware_status', 'name')
                                 ->label('Estado')
-                                ->columnSpan(2)
+                                ->columnSpan(['default' => 2, 'sm' => 2, 'md' => 2])
                                 ->createOptionForm([
                                     TextInput::make('name')
                                         ->label('Nombre del estado')
@@ -124,22 +126,17 @@ class HardwareResource extends Resource
                                 ->required(),
                             TextInput::make('serial_number')
                                 ->label('Número de Serie')
-                                ->columnSpan(2),
+                                ->columnSpan(['default' => 2, 'sm' => 2, 'md' => 2]),
                         ])
                         ->collapsible()
                         ->compact()
-                        ->columns(6)
-                        ->columnSpan(4),
-           /*          Section::make('Código QR')
-                        ->columnSpan(1)
-                        ->collapsible()
-                        ->compact()
-                        ->schema([ViewField::make('qr_code')->view('filament.components.qr_code')]), */
-                ])->columns(2),
-
-                /* self::customFieldsSchema(self::getModel()), */
-
+                        ->columns(['default' => 2, 'sm' => 4, 'md' => 6])
+                        ->columnSpan(['default' => 'full', 'lg' => 4]),
+                ])->columns(['default' => 1, 'lg' => 2]),
+          /*       self::customFieldsSchema(self::getModel()),  */
                 ClsmComponent::render(false),
+
+            //POR APLICAR
 
                 Section::make('Fecha y costo de compra')
                     ->description('Por favor, completa el siguiente formulario')
@@ -158,7 +155,7 @@ class HardwareResource extends Resource
                     ])
                     ->collapsible()
                     ->compact()
-                    ->columns(4),
+                    ->columns(['default' => 1, 'sm' => 2, 'md' => 4]),
 
                 Section::make('Disponibilidad para solicitud')
                     ->description('¿Este activo puede ser solicitado por otros?')
@@ -170,10 +167,10 @@ class HardwareResource extends Resource
                     ])
                     ->collapsible()
                     ->compact()
-                    ->columns(),
+                    ->columns(1),
 
                 ImagesAndNoteComponent::render(),
-            ])->columns(3);
+            ])->columns(['default' => 1, 'lg' => 3]);
     }
 
     public static function table(Table $table): Table
@@ -182,51 +179,80 @@ class HardwareResource extends Resource
             ->columns([
                 TextColumn::make('id')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                    
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable()
                     ->label('Nombre')
-                    ->wrap(),
+                    ->wrap()
+                    ->limit(30)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 30) {
+                            return null;
+                        }
+                        return $state;
+                    }),
+                    
                 TextColumn::make('hardware_model.name')
                     ->sortable()
                     ->searchable()
                     ->label('Modelo')
-                    ->iconPosition('after'),
+                    ->wrap()
+                    ->limit(25)
+                    ->toggleable()
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 25) {
+                            return null;
+                        }
+                        return $state;
+                    }),
+                    
                 TextColumn::make('hardware_status.name')
                     ->badge()
                     ->sortable()
                     ->searchable()
                     ->color('success')
                     ->label('Estado')
-                    ->iconPosition('after'),
+                    ->toggleable(),
+                    
                 TextColumn::make('serial_number')
                     ->sortable()
-                    ->alignRight()
                     ->searchable()
                     ->label('Número de serie')
-                    ->badge(),
+                    ->badge()
+                    ->limit(20)
+                    ->toggleable(isToggledHiddenByDefault: false),
+                    
                 TextColumn::make('people_count')
                     ->counts('people')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])." de $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])."/".$state)
                     ->sortable()
                     ->color('gray')
-                    ->alignRight()
-                    ->label('Responsable'),
+                    ->label('Responsable')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->alignCenter(),
+                    
                 TextColumn::make('components_count')
                     ->counts('components')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['components'])." de $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['components'])."/".$state)
                     ->sortable()
                     ->color('gray')
-                    ->alignRight()
-                    ->label('Componente'),
+                    ->label('Componente')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->alignCenter(),
+                    
                 TextColumn::make('licences_count')
                     ->counts('licences')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['licences'])." de $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['licences'])."/".$state)
                     ->sortable()
                     ->color('gray')
-                    ->alignRight()
-                    ->label('Licencia'),
+                    ->label('Licencia')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->alignCenter(),
             ])
             ->filters([
                 //
@@ -235,25 +261,28 @@ class HardwareResource extends Resource
                 //FilamentExportHeaderAction::make('export'),
             ])
             ->actions([
-                  Tables\Actions\EditAction::make()
-                ->button()
-                ->color('success'),
+                Tables\Actions\EditAction::make()
+                    ->button()
+                    ->color('success')
+                    ->label(''),
                 Tables\Actions\DeleteAction::make()
                     ->button()
                     ->color('danger')
+                    ->label('')
                     ->successNotification(
                         Notification::make()
                             ->title('Equipo informático eliminado exitosamente')
-                            ->body('El equipo informático  ha sido eliminado correctamente.')
+                            ->body('El equipo informático ha sido eliminado correctamente.')
                             ->success()
                     ),
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ])
-            ]);
+            ])
+            ->striped()
+            ->defaultSort('id', 'desc');
     }
 
     public static function getRelations(): array

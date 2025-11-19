@@ -30,7 +30,7 @@ class ComponentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-puzzle-piece';
 
-  protected static ?string $navigationGroup = 'Inventario Institucional';
+    protected static ?string $navigationGroup = 'Inventario Institucional';
  
     protected static ?string $navigationLabel = 'Componentes';
     protected static ?string $modelLabel = 'Componentes';
@@ -58,7 +58,7 @@ class ComponentResource extends Resource
         return [
             'Numero Modelo' => $record->model_number,
             'Cantidad' => $record->quantity,
-            'Área' => $record->department?->name ?? 'Unknown',
+            'Área' => $record->department?->name ?? 'Desconocido',
         ];
     }
 
@@ -66,7 +66,7 @@ class ComponentResource extends Resource
     {
         return $form
             ->schema([
-                 NcqComponent::render(), 
+                NcqComponent::render(), 
                 /* self::customFieldsSchema(self::getModel()), */
                 ClsmComponent::render(),
 
@@ -74,7 +74,7 @@ class ComponentResource extends Resource
                     ->description('Por favor complete el siguiente formulario')
                     ->collapsible()
                     ->compact()
-                    ->columns(4)
+                    ->columns(['default' => 1, 'sm' => 2, 'md' => 4])
                     ->schema([
                         DatePicker::make('purchase_date')
                             ->label('Fecha de compra')
@@ -85,12 +85,14 @@ class ComponentResource extends Resource
                             ->numeric()
                             ->prefix('S/')
                             ->minValue(0),
+                            
                         TextInput::make('model_number')
                             ->label('Modelo'),
+                            
                         TextInput::make('order_number')
                             ->label('Orden'),
                     ]),
-
+                    
                 ImagesAndNoteComponent::render(),
             ]);
     }
@@ -101,60 +103,84 @@ class ComponentResource extends Resource
             ->columns([
                 TextColumn::make('id')
                     ->searchable()
-                    ->sortable(),
-                TextColumn::make('name')
-                    ->iconPosition('after')
-                    ->label('Nombre')
-                    ->searchable()->sortable(),
-                TextColumn::make('quantity')
-                    ->label('Cantidad total')
-                    ->searchable()
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()." de $state")
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                    
+                TextColumn::make('name')
+                    ->label('Nombre')
+                    ->searchable()
+                    ->sortable()
+                    ->wrap()
+                    ->limit(30)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 30) {
+                            return null;
+                        }
+                        return $state;
+                    }),
+                    
+                TextColumn::make('quantity')
+                    ->searchable()
+                    ->sortable()
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()."/".$state)
                     ->color(fn (Model $record): string => $record->totalQuantityLeft() <= 0 ? 'danger' : 'gray')
-                    ->alignRight()
+                    ->alignCenter()
                     ->label('Cantidad'),
+                    
                 TextColumn::make('hardware_count')
                     ->counts('hardware')
-                    ->label('Cantidad total')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])." de $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])."/".$state)
                     ->sortable()
                     ->color('gray')
-                    ->alignRight()
-                    ->label('Equipo'),
+                    ->alignCenter()
+                    ->label('Equipo')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                    
                 TextColumn::make('department.name')
                     ->searchable()
                     ->sortable()
                     ->label('Área')
-                    ->alignRight(),
+                    ->wrap()
+                    ->limit(25)
+                    ->toggleable()
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 25) {
+                            return null;
+                        }
+                        return $state;
+                    }),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                 Tables\Actions\EditAction::make()
-                ->button()
-                ->color('success'),
+                Tables\Actions\EditAction::make()
+                    ->button()
+                    ->color('success')
+                    ->label(''),
+                    
                 Tables\Actions\DeleteAction::make()
                     ->button()
                     ->color('danger')
+                    ->label('')
                     ->successNotification(
                         Notification::make()
                             ->title('Componente eliminado exitosamente')
                             ->body('El componente ha sido eliminado correctamente.')
                             ->success()
                     ),
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->striped()
+            ->defaultSort('id', 'desc');
     }
 
-
-                
     public static function getRelations(): array
     {
         return [

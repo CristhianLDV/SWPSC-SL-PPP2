@@ -57,9 +57,9 @@ class ConsumableResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Model number' => $record->model_number,
-            'Quantity' => $record->quantity,
-            'Department' => $record->department?->name ?? 'Unknown',
+            'Número Modelo' => $record->model_number,
+            'Cantidad' => $record->quantity,
+            'Área' => $record->department?->name ?? 'Desconocido',
         ];
     }
 
@@ -67,24 +67,27 @@ class ConsumableResource extends Resource
     {
         return $form
             ->schema([
-                 NcqComponent::render(),
-           /*      self::customFieldsSchema(self::getModel()), */
+                NcqComponent::render(),
+                /*      self::customFieldsSchema(self::getModel()), */
                 ClsmComponent::render(),
 
                 Section::make('Fecha de compra y costo')
                     ->description('Por favor complete el siguiente formulario')
                     ->collapsible()
                     ->compact()
-                    ->columns(4)
+                    ->columns(['default' => 1, 'sm' => 2, 'md' => 4])
                     ->schema([
                         DatePicker::make('purchase_date')
                             ->label('Fecha de compra'),
+                            
                         TextInput::make('purchase_cost')
                             ->label('Costo de compra')  
                             ->numeric()
                             ->prefix('S/'),
+                            
                         TextInput::make('model_number')
                             ->label('Modelo'),
+                            
                         TextInput::make('order_number')
                             ->label('Orden'),
                     ]),
@@ -99,31 +102,54 @@ class ConsumableResource extends Resource
             ->columns([
                 TextColumn::make('id')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                    
                 TextColumn::make('name')
-                    ->iconPosition('after')
                     ->label('Nombre')
-                    ->searchable()->sortable(),
+                    ->searchable()
+                    ->sortable()
+                    ->wrap()
+                    ->limit(30)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 30) {
+                            return null;
+                        }
+                        return $state;
+                    }),
+                    
                 TextColumn::make('quantity')
                     ->searchable()
-                    ->label('Cantidad total')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()." de $state")
                     ->sortable()
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()."/".$state)
                     ->color(fn (Model $record): string => $record->totalQuantityLeft() <= 0 ? 'danger' : 'gray')
-                    ->alignRight()
+                    ->alignCenter()
                     ->label('Cantidad'),
+                    
                 TextColumn::make('people_count')
                     ->counts('people')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])." de $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])."/".$state)
                     ->sortable()
                     ->color('gray')
-                    ->alignRight()
-                    ->label('Responsable'),
+                    ->alignCenter()
+                    ->label('Responsable')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                    
                 TextColumn::make('department.name')
-                ->searchable()
-                ->sortable()
-                ->label('Área')
-                ->alignRight(),
+                    ->searchable()
+                    ->sortable()
+                    ->label('Área')
+                    ->wrap()
+                    ->limit(25)
+                    ->toggleable()
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 25) {
+                            return null;
+                        }
+                        return $state;
+                    }),
             ])
             ->filters([
                 //
@@ -133,24 +159,28 @@ class ConsumableResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->button()
-                ->color('success'),
+                    ->button()
+                    ->color('success')
+                    ->label(''),
+                    
                 Tables\Actions\DeleteAction::make()
                     ->button()
                     ->color('danger')
+                    ->label('')
                     ->successNotification(
                         Notification::make()
                             ->title('Consumible eliminado exitosamente')
                             ->body('El consumible ha sido eliminado correctamente.')
                             ->success()
                     ),
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->striped()
+            ->defaultSort('id', 'desc');
     }
 
     public static function getRelations(): array

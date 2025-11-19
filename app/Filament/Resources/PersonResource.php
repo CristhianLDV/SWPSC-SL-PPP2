@@ -84,13 +84,8 @@ class PersonResource extends Resource
                                 ->label('Correo electrónico')
                                 ->placeholder('Ingrese el correo electrónico'),
                         ]),
-                    Section::make('Código QR')
-                        ->columnSpan(1)
-                        ->collapsible()
-                        ->compact()
-                        ->schema([ViewField::make('qr_code')->view('filament.components.qr_code')]),
-                ])->columns(4),
-                self::customFieldsSchema(self::getModel()),
+                ])->columns(3),
+                /* self::customFieldsSchema(self::getModel()), */
                 ImagesAndNoteComponent::render(),
             ]);
     }

@@ -112,8 +112,8 @@ trait HasCustomFields
             $schema[] = ViewField::make('text')->view('filament.components.text');
         }
 
-        return Section::make('Campos personalizados')
-            ->description('Por favor, completa los siguientes campos personalizados')
+        return Section::make('Especificaciones del dispositivo')
+            ->description('Por favor, completa los siguientes campos del dispositivo')
             ->columns($columnsCount)
             ->schema($schema);
     }

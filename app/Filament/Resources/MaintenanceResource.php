@@ -74,13 +74,9 @@ class MaintenanceResource extends Resource
                                 ->minValue(0.0)
                                 ->prefix('S/'),
                         ]),
-                    Section::make('QR Code')
-                        ->columnSpan(2)
-                        ->collapsible()
-                        ->compact()
-                        ->schema([ViewField::make('qr_code')->view('filament.components.qr_code')]),
-                ])->columns(6),
-                self::customFieldsSchema(self::getModel()),
+                
+                ])->columns(3),
+                /* self::customFieldsSchema(self::getModel()), */
                 ImagesAndNoteComponent::render(),
             ])->columns(3);
     }

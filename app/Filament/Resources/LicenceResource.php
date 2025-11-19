@@ -31,9 +31,9 @@ class LicenceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
     protected static ?string $navigationGroup = 'Inventario Institucional';
-    protected static ?string $navigationLabel = ' Licencias de software';
-    protected static ?string $modelLabel = ' Licencias de software';
-    protected static ?string $pluralModelLabel = ' Licencias de software';
+    protected static ?string $navigationLabel = 'Licencias de software';
+    protected static ?string $modelLabel = 'Licencias de software';
+    protected static ?string $pluralModelLabel = 'Licencias de software';
     protected static ?string $recordTitleAttribute = 'name'; 
     protected static ?int $navigationSort = 8;
 
@@ -55,9 +55,9 @@ class LicenceResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Product key' => $record->product_key,
-            'Quantity' => $record->quantity,
-            'Licensed to' => $record->licensed_to_email,
+            'Clave del producto' => $record->product_key,
+            'Cantidad' => $record->quantity,
+            'Licenciado a' => $record->licensed_to_email,
         ];
     }
 
@@ -73,14 +73,18 @@ class LicenceResource extends Resource
                     ->description('Por favor complete el siguiente formulario')
                     ->collapsible()
                     ->compact()
-                    ->columns(4)
+                    ->columns(['default' => 1, 'sm' => 2, 'md' => 4])
                     ->schema([
                         TextInput::make('licensed_to_name')
                             ->label('Nombre con licencia'),
+                            
                         TextInput::make('licensed_to_email')
-                            ->label('Correo electrónico del titular'),
+                            ->label('Correo electrónico del titular')
+                            ->email(),
+                            
                         TextInput::make('product_key')
                             ->label('Clave del producto'),
+                            
                         TextInput::make('order_number')
                             ->label('Número de orden'),
                     ]),
@@ -89,16 +93,19 @@ class LicenceResource extends Resource
                     ->description('Por favor complete el siguiente formulario')
                     ->collapsible()
                     ->compact()
-                    ->columns(4)
+                    ->columns(['default' => 1, 'sm' => 2, 'md' => 4])
                     ->schema([
                         DatePicker::make('purchase_date')
                             ->label('Fecha de compra'),
+                            
                         TextInput::make('purchase_cost')
                             ->label('Costo de compra')
                             ->numeric()
                             ->prefix('S/'),
+                            
                         DatePicker::make('expiration_date')
                             ->label('Fecha de expiración'),
+                            
                         DatePicker::make('termination_date')
                             ->label('Fecha de terminación'),
                     ]),
@@ -111,42 +118,64 @@ class LicenceResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->sortable()->searchable(),
-                TextColumn::make('name')->sortable()->searchable()->label('Nombre'),
-                TextColumn::make('quantity')
-                    ->label('Cantidad total')
-                    ->searchable()
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()." de $state")
+                TextColumn::make('id')
                     ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                    
+                TextColumn::make('name')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Nombre')
+                    ->wrap()
+                    ->limit(30)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 30) {
+                            return null;
+                        }
+                        return $state;
+                    }),
+                    
+                TextColumn::make('quantity')
+                    ->searchable()
+                    ->sortable()
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalQuantityLeft()."/".$state)
                     ->color(fn (Model $record): string => $record->totalQuantityLeft() <= 0 ? 'danger' : 'gray')
-                    ->alignRight()
+                    ->alignCenter()
                     ->label('Cantidad'),
+                    
                 TextColumn::make('people_count')
                     ->counts('people')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])." de $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])."/".$state)
                     ->sortable()
                     ->color('gray')
-                    ->alignRight()
-                    ->label('Responsable'),
+                    ->alignCenter()
+                    ->label('Responsable')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                    
                 TextColumn::make('hardware_count')
                     ->counts('hardware')
-                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])." de $state")
+                    ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['hardware'])."/".$state)
                     ->sortable()
                     ->color('gray')
-                    ->alignRight()
-                    ->label('Equipo'),
-
+                    ->alignCenter()
+                    ->label('Equipo')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
-               Tables\Actions\EditAction::make()
-                ->button()
-                ->color('success'),
+                Tables\Actions\EditAction::make()
+                    ->button()
+                    ->color('success')
+                    ->label(''),
+                    
                 Tables\Actions\DeleteAction::make()
                     ->button()
                     ->color('danger')
+                    ->label('')
                     ->successNotification(
                         Notification::make()
                             ->title('Licencia eliminada exitosamente')
@@ -161,7 +190,9 @@ class LicenceResource extends Resource
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
-            ]);
+            ])
+            ->striped()
+            ->defaultSort('id', 'desc');
     }
 
     public static function getRelations(): array

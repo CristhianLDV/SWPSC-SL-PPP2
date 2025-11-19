@@ -42,7 +42,7 @@ class DepartmentResource extends Resource
                     ->label('Nombre')
                     ->placeholder('Ingrese el nombre')
                     ->maxLength(255),
-                self::customFieldsSchema(self::getModel()),
+            /*     self::customFieldsSchema(self::getModel()), */
                 ImagesAndNoteComponent::render(),
             ])->columns(1);
     }

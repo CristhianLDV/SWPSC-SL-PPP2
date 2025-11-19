@@ -44,7 +44,7 @@ class LocationResource extends Resource
                     ->placeholder('Ingrese el nombre')
                     ->required()
                     ->maxLength(255),
-                self::customFieldsSchema(self::getModel()),
+             /*    self::customFieldsSchema(self::getModel()), */
                 ImagesAndNoteComponent::render(),
             ])->columns(1);
     }
