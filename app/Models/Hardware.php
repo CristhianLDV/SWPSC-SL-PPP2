@@ -31,6 +31,7 @@ class Hardware extends Model
         'location_id',
         'name',
         'notes',
+        'specifications',
         'order_number',
         'purchase_cost',
         'purchase_date',
@@ -44,6 +45,7 @@ class Hardware extends Model
 
     protected $casts = [
         'files' => 'array',
+        'specifications' => 'array',
     ];
 
     public function scopeWithStatus($query, $statusName)

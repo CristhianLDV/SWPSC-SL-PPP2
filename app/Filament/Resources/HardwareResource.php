@@ -21,8 +21,10 @@ use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -82,7 +84,7 @@ class HardwareResource extends Resource
                             TextInput::make('name')
                                 ->label('Nombre')
                                 ->required()
-                                ->unique()
+                                ->unique(ignoreRecord: true)
                                 ->maxLength(255)
                                 ->columnSpan(['default' => 2, 'sm' => 2, 'md' => 2]),
                             BelongsToSelect::make('hardware_model_id')
@@ -137,6 +139,21 @@ class HardwareResource extends Resource
                 ClsmComponent::render(false),
 
             //POR APLICAR
+
+            Section::make('Especificaciones Técnicas')
+                                ->description('Agregue todas las características del equipo.')
+                                ->schema([
+                                    KeyValue::make('specifications')
+                                        ->label('Atributos del dispositivo')
+                                        ->keyLabel('Atributo (Ej. Procesador, RAM, Velocidad, etc.)')
+                                        ->valueLabel('Descripción')
+                                        ->addButtonLabel('Agregar atributo')
+                                        ->reorderable()
+                                        ->nullable()
+                                         ->live(),   
+                                ])
+                                ->collapsible()
+                                ->columns(1),
 
                 Section::make('Fecha y costo de compra')
                     ->description('Por favor, completa el siguiente formulario')
@@ -226,7 +243,27 @@ class HardwareResource extends Resource
                     ->badge()
                     ->limit(20)
                     ->toggleable(isToggledHiddenByDefault: false),
-                    
+                                
+                TextColumn::make('location.name')
+                    ->label('Ubicación')
+                    ->toggleable(),
+
+                // Resumen de especificaciones
+               TextColumn::make('specifications')
+    ->label('Especificaciones')
+    ->formatStateUsing(function ($state) {
+        if (!is_array($state) || empty($state)) {
+            return '—';
+        }
+
+        return collect($state)
+            ->map(fn ($v, $k) => ucfirst($k) . ': ' . $v)
+            ->take(3)
+            ->join(' | ');
+    })
+    ->wrap()
+    ->toggleable(),
+
                 TextColumn::make('people_count')
                     ->counts('people')
                     ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])."/".$state)
