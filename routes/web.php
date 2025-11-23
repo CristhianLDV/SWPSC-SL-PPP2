@@ -21,3 +21,4 @@ Route::get('/auth/callback', function () {
 
     return redirect('/admin');
 });
+

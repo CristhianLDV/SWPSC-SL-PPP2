@@ -140,20 +140,20 @@ class HardwareResource extends Resource
 
             //POR APLICAR
 
-            Section::make('Especificaciones Técnicas')
-                                ->description('Agregue todas las características del equipo.')
-                                ->schema([
-                                    KeyValue::make('specifications')
-                                        ->label('Atributos del dispositivo')
-                                        ->keyLabel('Atributo (Ej. Procesador, RAM, Velocidad, etc.)')
-                                        ->valueLabel('Descripción')
-                                        ->addButtonLabel('Agregar atributo')
-                                        ->reorderable()
-                                        ->nullable()
-                                         ->live(),   
-                                ])
-                                ->collapsible()
-                                ->columns(1),
+                
+                    KeyValue::make('specifications')
+                        ->label('Especificaciones Técnicas')
+                        ->keyLabel('Atributo (Ej. Procesador, RAM, Velocidad, etc.)')
+                        ->valueLabel('Descripción')
+                        ->addButtonLabel('Agregar atributo')
+                        ->reorderable()
+                        ->nullable()
+                        ->live()
+                        ->columnSpan('full')
+                        ->extraAttributes([
+                            'style' => 'max-height: 400px; overflow-y: auto; display: block;'
+                        ]),   
+              
 
                 Section::make('Fecha y costo de compra')
                     ->description('Por favor, completa el siguiente formulario')
@@ -248,22 +248,12 @@ class HardwareResource extends Resource
                     ->label('Ubicación')
                     ->toggleable(),
 
-                // Resumen de especificaciones
-               TextColumn::make('specifications')
-    ->label('Especificaciones')
-    ->formatStateUsing(function ($state) {
-        if (!is_array($state) || empty($state)) {
-            return '—';
-        }
-
-        return collect($state)
-            ->map(fn ($v, $k) => ucfirst($k) . ': ' . $v)
-            ->take(3)
-            ->join(' | ');
-    })
-    ->wrap()
-    ->toggleable(),
-
+                TextColumn::make('specifications')
+                    ->label('Especificaciones Técnicas')
+                    ->formatStateUsing(function ($state) {
+                        return json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                    })
+                    ->wrap(),
                 TextColumn::make('people_count')
                     ->counts('people')
                     ->formatStateUsing(fn (string $state, Model $record): string => $record->totalNotCheckedInFor(['people'])."/".$state)

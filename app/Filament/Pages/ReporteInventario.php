@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Filament\Pages;
-
 use Filament\Pages\Page;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -17,7 +16,7 @@ use App\Exports\InventarioExport;
 class ReporteInventario extends Page implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
-
+   
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationLabel = 'Reportes';
     protected static ?string $navigationGroup = 'Reportes y Estadísticas';
@@ -115,8 +114,6 @@ class ReporteInventario extends Page implements Tables\Contracts\HasTable
                 ->label('Ver detalle')
                 ->icon('heroicon-o-eye')
                 ->action(fn (Hardware $record) => $this->verDetalle($record)),  */
-                
-     
                     
             ]);
     }
@@ -154,4 +151,8 @@ class ReporteInventario extends Page implements Tables\Contracts\HasTable
             'reporte_inventario.xlsx'
         );
     }
+ 
+    
+
+    
 }

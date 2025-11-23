@@ -59,6 +59,7 @@ class MaintenanceResource extends Resource
                         ->schema([
                             BelongsToSelect::make('hardware_id')
                                 ->relationship('hardware', 'name')
+                                ->label('Equipo')
                                 ->searchable()
                                 ->preload()
                                 ->required(),
@@ -88,6 +89,10 @@ class MaintenanceResource extends Resource
                 TextColumn::make('id')
                 ->sortable()
                 ->label('ID')
+                ->searchable(),
+                TextColumn::make('hardware.name')
+                ->sortable()
+                ->label('Equipo')
                 ->searchable(),
                 TextColumn::make('hardware.hardware_model.name')
                 ->sortable()
