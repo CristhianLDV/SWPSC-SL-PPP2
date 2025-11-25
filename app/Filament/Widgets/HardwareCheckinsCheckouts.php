@@ -73,11 +73,11 @@ class HardwareCheckinsCheckouts extends ApexChartWidget
             ],
             'series' => [
                 [
-                    'name' => 'Check-ins',
+                    'name' => 'Entradas',
                     'data' => $this->rangeAreaData('checked_in_at'),
                 ],
                 [
-                    'name' => 'Check-outs',
+                    'name' => 'Salidas',
                     'data' => $this->rangeAreaData('checked_out_at'),
                 ],
             ],
